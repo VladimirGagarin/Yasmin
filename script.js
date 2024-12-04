@@ -23,6 +23,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const receiverTone = new Audio("receiver.mp3");
     const vibrate = new Audio("vib.mp3");
 
+    // Check if the app can be installed
+    let deferredPrompt;
+    const installButton = document.querySelector('.hidden-button button');
+    const installOverlay = document.querySelector('.side-install-button-overlay');
+    const displayedIcon = document.querySelector('.displayed-icon');
+
     let currentQuoteReader = null;
     let currentMedia = null;
     let currentAudioPlayer = null; // Global variable to store the currently playing audio
@@ -342,6 +348,8 @@ document.addEventListener('DOMContentLoaded', function () {
     
     
     function handlePasswordValidation() {
+        
+        installOverlay.style.display = "none";
         const passwordEnter = InputPassCode.value.trim().replace(/\s+/g, " ").toLowerCase();
         const matchedPasscode = password.trim().replace(/\s+/g, " ").toLowerCase();
     
@@ -386,10 +394,12 @@ document.addEventListener('DOMContentLoaded', function () {
         if(!currentQuoteReader.paused){
             currentQuoteReader.pause();
         }
+       
     }
 
     // Button click logic for playing audio
     QuoteReaderBtn.onclick = function () {
+
         if (currentQuoteReader && !currentQuoteReader.paused) {
             currentQuoteReader.pause();
             currentQuoteReader = null;
@@ -516,6 +526,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.addEventListener('visibilitychange', function () {
         if (document.visibilityState === 'hidden') {
             authOverLay.style.display = "flex";
+            installOverlay.style.display = "flex";
 
             if(currentQuoteReader && !currentQuoteReader.paused) {
                 currentQuoteReader.pause();
@@ -1051,11 +1062,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
       
     
-        // Check if the app can be installed
-        let deferredPrompt;
-        const installButton = document.querySelector('.hidden-button button');
-        const installOverlay = document.querySelector('.side-install-button-overlay');
-        const displayedIcon = document.querySelector('.displayed-icon');
+        
 
         // Listen for the 'beforeinstallprompt' event
         window.addEventListener('beforeinstallprompt', (event) => {
