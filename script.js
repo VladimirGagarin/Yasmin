@@ -1075,4 +1075,28 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
+        window.addEventListener('appinstalled', () => {
+            installButton.style.display = "none"; // Hide the install button overlay once installed
+          });
+    
+
+    // Get the status text element
+    const statusText = document.getElementById('status-text');
+
+    // Function to update the status based on the network connection
+    function updateStatus() {
+    if (navigator.onLine) {
+        statusText.textContent = "Online";  // Update status to "Online"
+    } else {
+        statusText.textContent = "Offline"; // Update status to "Offline"
+    }
+    }
+
+    // Initial check when the page loads
+    updateStatus();
+
+    // Event listeners to detect changes in the network status
+    window.addEventListener('online', updateStatus);  // Fired when the user goes online
+    window.addEventListener('offline', updateStatus); // Fired when the user goes offline
+
 })
