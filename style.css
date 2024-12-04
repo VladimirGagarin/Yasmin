@@ -1,0 +1,961 @@
+* / {
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+}
+
+body{
+    height: 100vh;
+    background:linear-gradient(270deg, cornflowerblue, lightblue) ;
+    color: #f9f9f9;
+    display: flex;
+    align-items: center;
+    justify-content:center;
+}
+
+.intro-div{
+    width: 60%;
+    height: 60vh;
+    background: linear-gradient(45deg,#cf04f3, #048ff3, #cf04f3);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content:center;
+    flex-direction: column;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+    animation: myAnim 2s ease 0s 1 normal forwards;
+}
+
+@keyframes myAnim {
+	0% {
+		opacity: 0;
+		transform: translateX(250px);
+	}
+
+	100% {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+.intro-div h1 {
+    font-size: 35px;
+    font-weight: bold;
+    font-family: Arial, sans-serif;
+    color: transparent;
+    background: linear-gradient(to right, orange, gold);
+    -webkit-background-clip: text; /* Corrected vendor prefix */
+    background-clip: text;
+    position: relative;
+   
+}
+
+.intro-div h1 span.arabic {
+    font-family: "Amiri", serif; /* Example font for Arabic */
+    direction: rtl; /* Right-to-left text direction */
+    
+}
+
+.intro-div h1::before{
+    content: '';
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* background: rgba(0,0,0, 0.4); */
+    z-index: 0;
+    position: absolute;
+}
+
+.intro-div h1 > * {
+    z-index:2;
+}
+
+.greeting{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.greeting h2{
+    font-size: 30px;
+}
+
+.greeting p{
+    font-size: 24px;
+    text-align: center;
+}
+
+.greeting .buttons{
+    display: flex;
+    width: 60%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    
+}
+
+.greeting .buttons button {
+    background-color: transparent;
+    border: 2px solid #f9f9f9;
+    color: #f9f9f9;
+    font-size: 30px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.greeting .buttons button:hover{
+    background-color: #f9f9f9;
+    color: #0056b3;
+}
+
+/* Responsive styles for screens 768px or smaller */
+@media (max-width: 800px) {
+
+    /* Intro-div adjustments */
+    .intro-div {
+        width: 90%; /* Fit the screen width */
+        height: auto; /* Adapt height to content */
+        padding: 15px; /* Add padding for smaller screens */
+        flex-direction: column; /* Maintain content stacking */
+    }
+
+    .intro-div h1 {
+        font-size: 28px; /* Smaller heading text */
+        text-align: center; /* Center align for smaller screens */
+    }
+
+    .greeting h2 {
+        font-size: 24px; /* Adjust secondary heading size */
+    }
+
+    .greeting p {
+        font-size: 18px; /* Smaller paragraph text */
+    }
+
+    .greeting .buttons {
+        flex-direction: row; /* Stack buttons vertically */
+        gap: 10px; /* Add spacing between buttons */
+        width: 100%; /* Buttons take full width */
+    }
+
+    .greeting .buttons button {
+        font-size: 20px; /* Smaller button text */
+        padding: 8px 16px; /* Adjust button size */
+    }
+}
+
+/* Default body style for light mode */
+body {
+    height: 100vh;
+    background: linear-gradient(270deg, cornflowerblue, lightblue);
+    color: #f9f9f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Dark mode styling */
+@media (prefers-color-scheme: dark) {
+    body {
+        background: linear-gradient(270deg, #1a1a2e, #16213e);
+        color: #e0e0e0; 
+    }
+
+    .intro-div {
+        box-shadow: rgba(0, 0, 0, 0.5) 0px 19px 38px, rgba(0, 0, 0, 0.35) 0px 15px 12px;
+    }
+
+    .intro-div h1 {
+        background: linear-gradient(to right, #ff7e5f, #feb47b); 
+        -webkit-background-clip: text;
+        color: transparent;
+    }
+
+    .greeting .buttons button {
+        background-color: transparent; 
+        border: 2px solid #e0e0e0; 
+        color: #e0e0e0; 
+    }
+
+    .greeting .buttons button:hover {
+        background-color: #e0e0e0; 
+        color: #1a1a2e; 
+    }
+}
+
+
+
+/*-----------------------------------------------------------------------------------------------------------------------*/
+
+.letter-div {
+    width: 80%;
+    max-width: 800px;
+    min-height: 400px;
+    height: 80vh;
+    background: #f1e3c6; /* Light parchment color */
+    border: 2px solid #d1b89b; /* Slightly darker beige border */
+    border-radius: 10px;
+    padding: 30px;
+    position: relative;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+    font-family: 'Georgia', serif;
+    display: none;
+    scroll-behavior: smooth;
+    background-image: url('https://www.transparenttextures.com/patterns/old-map.png'); /* Subtle texture for ancient paper effect */
+    color: #3a2a1d; /* Dark brown text */
+    animation: letterFadeLeft 2s ease 0s 1 normal forwards;
+}
+
+@keyframes letterFadeLeft {
+	0% {
+		opacity: 0;
+		transform: translateX(-50px);
+	}
+
+	100% {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+/* Buttons */
+.read-btn, .close-btn {
+    position: absolute;
+    top: 10px;
+    background-color: #b87e55;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+}
+
+.read-btn {
+    left: 20px;
+}
+
+.close-btn {
+    right: 20px;
+    border-radius: 50%;
+    font-size: 18px;
+    padding: 8px 12px;
+}
+
+.read-btn:hover {
+    background-color: #8a5a3e;
+}
+
+.close-btn:hover {
+    background-color: #7d3b1e;
+}
+
+/* Letter Content */
+.letter-content {
+    padding: 40px;
+    border-radius: 10px;
+    height: 70vh;
+}
+
+/* Top Content */
+.top-content {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #8a5a3e;
+}
+
+.right-corner {
+    text-align: right;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+.left-corner {
+    font-size: 18px;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content:space-between;
+    align-items: start;
+}
+
+.left-corner h2 {
+    margin-top: 0;
+    font-size: 24px;
+
+}
+.letter-text {
+    height: 40vh;
+    overflow-y: auto;
+    scrollbar-width: none;
+    
+}
+.letter-text::-webkit-scrollbar{
+    display: none;
+}
+
+.letter-text .title-div {
+    font-size: 16px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    text-transform: capitalize;
+    font-style: italic;
+    text-decoration: underline;
+}
+
+/* Letter Text */
+.letter-text p {
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 20px 0;
+    padding: 10px 20px;
+    border-left: 3px solid #b87e55; /* To mimic ink writing on old paper */
+}
+
+.letter-footer{
+    margin-top: 10px;
+    display: flex;
+    align-items: flex-start;
+}
+
+/* Letter Footer */
+.letter-footer p {
+    font-size: 16px;
+    font-style: italic;
+}
+
+/* Lines for P tags inside Letter Content */
+.letter-text p {
+    position: relative;
+    padding-left: 20px;
+    margin-bottom: 15px;
+}
+
+.letter-text p:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 15px;
+    height: 100%;
+    border-left: 1px dashed #b87e55; /* Lines resembling an old letter */
+}
+
+.letter-footer{
+    opacity:0;
+}
+
+.letter-footer.view{
+    opacity: 1;
+}
+
+.letter-footer p {
+    text-align: right;
+    font-style: italic;
+    color: #3a2a1d;
+}
+
+/* Additional tweaks for letter-like appearance */
+.letter-div {
+    background-color: #f4e1b2; /* Light parchment background */
+    border-radius: 20px;
+}
+
+@media (max-width: 800px) {
+    .letter-div {
+        width: 99%; /* Adjust width for smaller screens */
+        padding: 10px; /* Reduce padding */
+        height: 90vh;
+    }
+
+    .read-btn, .close-btn {
+        font-size: 12px; /* Smaller font size for buttons */
+        padding: 4px 8px; /* Adjust button size */
+        top: 10px;
+    }
+
+    .letter-content {
+        padding: 10px; /* Adjust padding inside letter content */
+        height: 85vh;
+    }
+
+    .top-content {
+        flex-direction: column-reverse; /* Stack content vertically on smaller screens */
+        align-items: flex-start;
+       
+    }
+
+    .left-corner h2 {
+        font-size: 20px; /* Adjust font size for headings */
+    }
+
+    .letter-text p {
+        font-size: 14px; /* Smaller font size for text */
+        margin: 10px 0; /* Adjust margin */
+    }
+
+    .letter-footer p {
+        font-size: 14px; /* Smaller footer font */
+    }
+    .letter-text .title-div {
+        font-size: 12px;
+        margin-bottom: 2px;
+    }
+
+    .letter-text {
+        height: 40vh;
+        
+    }
+    .letter-footer p{
+        text-align: center;
+        
+    }
+}
+
+/***********************************************************************************************************************/
+
+.chat-div {
+    width: 80%;
+    max-width: 800px;
+    min-height: 400px;
+    height: 80vh;
+    background: #2f2f2f; /* Dark grey to simulate blackboard */
+    border: 2px solid #444; /* Slightly lighter grey border */
+    border-radius: 10px;
+    padding: 30px;
+    position: relative;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+    font-family: 'Georgia', serif;
+    display: none;
+    scroll-behavior: smooth;
+    background-image: url('https://www.transparenttextures.com/patterns/blackboard.png'); /* Blackboard texture */
+    background-size: cover; /* Ensure the texture fills the container */
+    color: #e5e5e5; /* Light grey text for contrast */
+    animation: letterFadeLeft 2s ease 0s 1 normal forwards;
+}
+
+/* Basic chat container styling */
+.chat-div {
+    width: 80%;
+    max-width: 800px;
+    min-height: 400px;
+    height: 80vh;
+    background: #2f2f2f; /* Dark grey to simulate blackboard */
+    border: 2px solid #444;
+    border-radius: 10px;
+    padding: 30px;
+    position: relative;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+    font-family: 'Georgia', serif;
+    color: #e5e5e5;
+    scroll-behavior: smooth;
+    background-image: url('logo.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: none;
+    flex-direction: column;
+    overflow-y: auto;
+    padding-bottom: 60px; /* Allow space for suggestion buttons */
+    position: relative;
+}
+
+.chat-div::before {
+    content: ''; /* Creates an empty element */
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent black overlay */
+    border-radius: 10px; /* Match the container's border radius */
+    z-index: 1; /* Make sure the overlay is above the background but below content */
+}
+/* Ensure children are above the overlay */
+.chat-div > * {
+    position: relative; /* This is required for z-index to work */
+    z-index: 2; /* Set the z-index of children elements above the overlay */
+}
+
+/* Header with user logo and name */
+.header-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #f9f9f9;
+}
+
+.user-logo  {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+    
+}
+
+.user-logo img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.name-status h2 {
+    margin: 0;
+    font-size: 20px;
+    background-color: #007bff;
+    border-radius: 10px;
+    margin-top: 5px;
+    padding: 5px 10px;
+}
+
+.name-status p {
+    margin-left: 10px;
+    font-size: 14px;
+    text-align: center;
+    color: gold;
+   
+}
+
+/* Chat messages */
+.chat-area {
+    width: 99%;
+    height: 50vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    border-radius: 10px;
+    scrollbar-width: none;
+}
+
+.chat-area::-webkit-scrollbar{
+    display: none;
+}
+
+/* Chat bubble container */
+.chat-message {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px 20px;
+    flex-wrap: nowrap; /* Prevent wrapping for chat bubbles */
+}
+
+/* Received messages (left side) */
+.chat-message.received {
+    justify-content: flex-start;
+    
+}
+
+/* Sent messages (right side) */
+.chat-message.sent {
+    justify-content: flex-end;
+    
+}
+
+/* Chat bubbles */
+.chat-bubble {
+    background-color: rgba(255, 255, 255, 0.2); /* Transparent background */
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 10px 15px;
+    max-width: 70%; /* Maximum width of the bubble */
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    color: #f4f4f4;
+    font-size: 18px;
+    white-space: pre-wrap; /* Ensures the text wraps */
+    word-wrap: break-word; /* Allows long words to wrap properly */
+    border: 1px solid #f9f9f9;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+/* Suggestion buttons container */
+.suggestion-replies {
+    position: fixed;
+    left: 10px;
+    bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    border-top: 1px solid #f9f9f9;
+    width: 96%;
+    height: 15vh;
+    overflow: hidden;
+    flex-wrap: nowrap;
+}
+
+/* Horizontal scrollable list */
+.suggestion-replies ul {
+    list-style-type: none;
+    padding: 5px;
+    min-width: 100%;
+    height: 100%;
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    white-space: nowrap; /* Prevent line breaks inside the list */
+    scrollbar-width: none;
+}
+
+.suggestion-replies ul::-webkit-scrollbar{
+    display: none;
+}
+
+/* Each suggestion item (li) */
+.suggestion-replies ul li {
+    min-width: auto; /* Allow li to expand based on content */
+    background-color: rgba(0, 87, 179, 0.6);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: none;
+    padding: 5px 10px;
+    font-size: 18px;
+    color: #f9f9f9;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    transition: background-color 0.3s;
+    height: 30px;
+    border: 1px solid #f9f9f9;
+    margin: auto 10px;
+    white-space: nowrap; /* Prevent text from wrapping */
+    display: inline-block; /* Let li items take width depending on text */
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+}
+
+.suggestion-replies ul li.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+
+/* Hover effect for suggestions */
+.suggestion-btn:hover {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.close-chat{
+    position: absolute;
+    top: 10px;
+    background-color: #048ff3;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    right: 20px;
+    border-radius: 50%;
+    font-size: 18px;
+    padding: 8px 12px;
+    transition: background-color 0.3s ease;
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+}
+
+/* Style the audio player container */
+.audio-player-container {
+    margin-top: 15px; /* Add space above the audio player */
+    padding: 10px;
+    background-color: transparent; /* Light background color for the container */
+    border-radius: 10px; /* Rounded corners for the container */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Light shadow for effect */
+    text-align: center; /* Center the audio player inside the container */
+    width: 50px; /* Make sure the player isn't too wide */
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+
+/* Optional: Styling for the chat message */
+.chat-message.received .audio-player-container {
+    background-color: transparent; /* Light blue for received messages */
+    border: 1px solid #f9f9f9;
+    border-radius: 50%;
+    
+}
+
+
+
+.audio-player-container button {
+    font-size: 20px;
+    padding: 10px 20px;
+    background-color: transparent;
+    border: 1px solid #f9f9f9;
+    color: #f9f9f9;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    transition: color 0.2s ease;
+}
+
+.audio-play-btn:hover {
+    color: #007bff; /* Change color on hover */
+}
+
+.text-display {
+    margin-top: 10px;
+    padding: 10px;
+    font-style: italic;
+    background-color: transparent;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    color: #f9f9f9;
+}
+
+
+@media screen and (max-width: 800px) {
+    /* Chat container */
+    .chat-div {
+        width: 99%;
+        height: 90vh;
+        padding: 20px;
+        font-size: 14px; /* Reduce font size for better readability on small screens */
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+
+    /* Header adjustments */
+    .header-title {
+        margin-bottom: 15px;
+    }
+
+    .user-logo {
+       
+        display: none;
+    }
+
+    .name-status h2 {
+        font-size: 18px;
+        padding: 3px;
+    }
+
+    .name-status p {
+        font-size: 12px;
+    }
+
+    /* Chat area adjustments */
+    .chat-area {
+        height: 60vh;
+        gap: 2px; /* Reduce gap between messages */
+    }
+
+    /* Chat message adjustments */
+    .chat-message {
+        padding: 8px 15px;
+    }
+
+    .chat-bubble {
+        font-size: 16px;
+        padding: 8px 12px;
+        max-width: 90%; /* Allow bubbles to use more screen space */
+    }
+
+    /* Suggestion replies adjustments */
+    .suggestion-replies {
+        left: 5px;
+        bottom: 5px;
+        width: 90%;
+        height: 15vh; /* Adjust height for better fit */
+    }
+
+    .suggestion-replies ul li {
+        padding: 5px 8px;
+        font-size: 14px;
+        margin: auto 5px;
+    }
+
+    /* Close button adjustments */
+    .close-chat {
+        font-size: 16px;
+        padding: 6px 10px;
+        right: 15px;
+    }
+
+    /* Audio player container adjustments */
+    .audio-player-container {
+        width: 40px;
+        height: 40px;
+        padding: 8px;
+        font-size: 18px; /* Adjust size of the play button */
+    }
+
+    .audio-play-btn {
+        font-size: 20px;
+        padding: 8px;
+    }
+}
+
+/******************************************************************************************************************************/
+
+/* Full-page overlay styling */
+.auth-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('intro.png') center/cover no-repeat; /* Full-page background image */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure it's above other content */
+}
+
+/* Darker overlay using ::before */
+.auth-overlay::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black overlay */
+    z-index: 1;
+}
+
+/* Styling for auth-content */
+.auth-content {
+    position: relative;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: transparent; /* Optional content background */
+    color: #f9f9f9;
+    border: 2px solid #f9f9f9;
+    text-align: center;
+    z-index: 2; /* Content above the overlay */
+    width: 40%;
+    height: 20vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.auth-content.wrong{
+    border-color: #FF0000;
+}
+
+/* Vibrate animation keyframes */
+@keyframes vibrate {
+    0% { transform: translateX(0); }
+    20% { transform: translateX(-2px); }
+    40% { transform: translateX(2px); }
+    60% { transform: translateX(-2px); }
+    80% { transform: translateX(2px); }
+    100% { transform: translateX(0); }
+}
+
+/* Apply animation to vibrate class */
+.auth-content.vibrate {
+    border-color: #FF0000;
+    animation: vibrate 0.3s linear;
+}
+
+
+/* Ensure children of auth-content are visible above the overlay */
+.auth-content > * {
+    position: relative;
+    z-index: 2;
+}
+
+/* Styling for label and input */
+.auth-content label {
+    display: block;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.auth-content input {
+    width: 80%;
+    padding: 10px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    background-color: transparent;
+    border: 1px solid #f9f9f9;
+    color: #f9f9f9;
+}
+
+.auth-content input::placeholder{
+    color: #f9f9f9;
+    opacity: 0.6;
+}
+/*********************************************************************************************************************/
+
+/* Container for the install icon and button */
+.side-install-button-overlay {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Icon style */
+.displayed-icon {
+    font-size: 32px;
+    background-color: transparent;
+    border: 2px solid #f9f9f9;
+    color: white;
+    border-radius: 50%;
+    padding: 15px;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Hidden button initially off-screen */
+.hidden-button {
+    display: none;
+    margin-top: 10px;
+    transform: translateY(20px);
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Show the button when the icon is clicked */
+.side-install-button-overlay.open .hidden-button {
+    display: block;
+    transform: translateY(0);
+}
+
+/* Button styling */
+.hidden-button button {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s;
+}
+
+.hidden-button button:hover {
+    background-color: #45a049;
+}
+
+/* Icon hover effect */
+.displayed-icon:hover {
+    transform: scale(1.1);
+}
