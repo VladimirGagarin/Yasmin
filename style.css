@@ -372,7 +372,7 @@ body {
     .letter-div {
         width: 99%; /* Adjust width for smaller screens */
         padding: 10px; /* Reduce padding */
-        height: 90vh;
+        height: 93vh;
     }
 
     .read-btn, .close-btn {
@@ -412,6 +412,9 @@ body {
     .letter-text {
         height: 40vh;
         
+    }
+    .letter-footer{
+        margin-top: 5px;
     }
     .letter-footer p{
         text-align: center;
@@ -571,7 +574,7 @@ body {
     border-radius: 15px;
     padding: 10px 15px;
     max-width: 70%; /* Maximum width of the bubble */
-    font-family: 'Comic Sans MS', cursive, sans-serif;
+    font-family: 'Comic Sans MS', sans-serif;
     color: #f4f4f4;
     font-size: 18px;
     white-space: pre-wrap; /* Ensures the text wraps */
@@ -628,7 +631,7 @@ body {
     color: #f9f9f9;
     border-radius: 8px;
     cursor: pointer;
-    font-family: 'Comic Sans MS', cursive, sans-serif;
+    font-family: 'Comic Sans MS', sans-serif;
     transition: background-color 0.3s;
     height: 30px;
     border: 1px solid #f9f9f9;
@@ -904,8 +907,8 @@ body {
 /* Container for the install icon and button */
 .side-install-button-overlay {
     position: fixed;
-    top: 20px;
-    right: 20px;
+    top: 40px;
+    left: 20px;
     z-index: 1000;
     display: flex;
     flex-direction: column;
@@ -914,7 +917,7 @@ body {
 
 /* Icon style */
 .displayed-icon {
-    font-size: 32px;
+    font-size: 18px;
     background-color: transparent;
     border: 2px solid #f9f9f9;
     color: white;
