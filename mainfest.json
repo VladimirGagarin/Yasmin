@@ -1,0 +1,21 @@
+{
+  "name": "My Angel",
+  "short_name": "Yasmin",
+  "description": "A magical space where every moment feels like a connection to the angelic. Enjoy music, memories, and a peaceful experience like no other.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#16213e",
+  "theme_color": "#f9f9f9",  
+  "icons": [
+    {
+      "src": "logo.jpg",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "intro.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
