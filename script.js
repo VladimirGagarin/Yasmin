@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const senderTone =  new Audio("sender.mp3");
     const receiverTone = new Audio("receiver.mp3");
     const vibrate = new Audio("vib.mp3");
+    const lovemSong = new Audio("loveme.mp3");
 
     // Check if the app can be installed
     let deferredPrompt;
@@ -349,12 +350,12 @@ document.addEventListener('DOMContentLoaded', function () {
     
     function handlePasswordValidation() {
         
-        installOverlay.style.display = "none";
         const passwordEnter = InputPassCode.value.trim().replace(/\s+/g, " ").toLowerCase();
         const matchedPasscode = password.trim().replace(/\s+/g, " ").toLowerCase();
-    
+
         if (passwordEnter === matchedPasscode) {
             authOverLay.style.display = "none";
+            installOverlay.style.display = "none";
             InputPassCode.value = '';
         } else {
             vibrate.play();
@@ -1122,5 +1123,168 @@ document.addEventListener('DOMContentLoaded', function () {
     // Event listeners to detect changes in the network status
     window.addEventListener('online', updateStatus);  // Fired when the user goes online
     window.addEventListener('offline', updateStatus); // Fired when the user goes offline
+
+    const musicArena = document.querySelector('.romantic-content .romantic-music');
+    const videoArena = document.querySelector(".romantic-content .romantic-video");
+    const romVideo = document.querySelector('.romantic-video .video-view video');
+    const musicPlayIcon = musicArena.querySelector('.romantic-play-icon');
+    const romanticText = document.querySelector('.romantic-content .romantic-text');
+    const  musicTitle = musicArena.querySelector('h3');
+    const videoTitle = videoArena.querySelector('h3');
+    const videoPlayIcon = document.querySelectorAll('.video-controls button')[0];
+    const filterIcon =   document.querySelectorAll('.video-controls button')[1];
+    const partyIcon = document.querySelectorAll('.video-controls button')[2];
+    let isPlayingMusic = false;
+    let isPlayingVideo = false;
+    let isfiltering = false;
+    let isParting = false;
+    let colorChange;
+
+
+    document.querySelector('.heartfelt-message').onclick = function () {
+        document.querySelector('.romantic-container-overlay').style.display = "flex";
+    };
+    
+    document.querySelector('.romantic-close').onclick = function () {
+        document.querySelector('.romantic-container-overlay').style.display = "none";
+
+        if(!romVideo.paused){
+            romVideo.pause();
+            romVideo.currentTime = 0;
+            videoPlayIcon.innerHTML = "&#9654;";
+            isPlayingVideo = false;
+            
+        }
+
+        if(!lovemSong.paused) {
+            lovemSong.pause();
+            lovemSong.currentTime = 0;
+            musicPlayIcon.innerHTML = "&#9654;";
+            isPlayingMusic = false;
+        }
+
+
+        musicArena.style.display = "flex";
+        videoArena.style.display = "flex";
+        romanticText.style.display = "none";
+        musicTitle.textContent = "Play Song Here";
+        videoTitle.textContent = "Play Video Here";
+        document.querySelector('.video-view').classList.remove('filtermode', "enlarge");
+        isfiltering = false;
+    };
+
+    musicPlayIcon.onclick = function () {
+        isPlayingMusic = !isPlayingMusic;
+
+        musicPlayIcon.innerHTML = isPlayingMusic ? "&#10074;&#10074;" : "&#9654;";
+        videoArena.style.display = isPlayingMusic ? "none" : "flex";
+        romanticText.style.display = isPlayingMusic ? "flex" : "none";
+
+        if(isPlayingMusic) {
+            lovemSong.play();
+
+            musicTitle.textContent = "Yasmin Love Me";
+
+        }
+        else{
+            lovemSong.pause();
+            musicTitle.textContent = "Play Song Here";
+            resetcolor();
+           
+        }
+
+        lovemSong.onended =() => {
+            isPlayingMusic = false;
+        
+            lovemSong.currentTime = 0;
+            musicPlayIcon.innerHTML = "&#9654;";
+            videoArena.style.display = "flex";
+            romanticText.style.display = "none";
+            musicTitle.textContent = "Play Song Here";
+            
+        }
+
+        romVideo.currentTime = 0;
+    }
+
+    videoPlayIcon.onclick = function () {
+        isPlayingVideo = !isPlayingVideo;
+
+        videoPlayIcon.innerHTML = isPlayingVideo ? "&#10074;&#10074;" : "&#9654;";
+        musicArena.style.display = isPlayingVideo ? "none" : "flex";
+        document.querySelector('.video-view').classList.toggle('enlarge', isPlayingVideo);
+
+        if(isPlayingVideo) {
+            romVideo.play();
+            videoTitle.textContent = "Yasmin Love Me Like You Do";
+        }
+        else{
+            romVideo.pause();
+            videoTitle.textContent = "Play Video Here";
+            resetcolor();
+        }
+
+
+        romVideo.onended = function () {
+            isPlayingVideo = false;
+            videoPlayIcon.innerHTML = "&#9654;";
+            musicArena.style.display = "flex";
+            videoTitle.textContent = "Play Video Here";
+            document.querySelector('.video-view').classList.remove('filtermode', "enlarge");
+            isfiltering = false;
+            resetcolor() ;
+        }
+
+        lovemSong.currentTime = 0;
+        document.querySelector('.video-view').classList.remove('filtermode');
+        isfiltering = false;
+    }
+
+    filterIcon.onclick = function () {
+        isfiltering = !isfiltering;
+        romVideo.style.filter = isfiltering ? "greyscale(100%)" : "none";
+        document.querySelector('.video-view').classList.toggle('filtermode', isfiltering);
+    };
+
+    document.querySelector('.romantic-closed-video').onclick = function () {
+        document.querySelector('.video-view').classList.remove('filtermode');
+        isfiltering = false;
+    }
+
+    partyIcon.onclick = function () {
+        isParting = !isParting;
+        partyIcon.classList.toggle("active", isParting)
+        partymode(isParting);
+    }
+
+    function partymode(state) {
+        if(state) {
+            if(isPlayingVideo) {
+                colorChange = setInterval(function () {
+                    const randomcolor = Math.floor(Math.random() * 0xffffff);
+                    const hexColor = `#${randomcolor.toString(16).padStart(6, "0")}`;
+                    document.querySelector('.romantic-container-overlay').style.backgroundColor = hexColor;
+                },2000);
+            }
+            else{
+                document.querySelector('.romantic-container-overlay').style.backgroundColor = 'rgba(255,0,0, 0.7)';
+                setTimeout(function () {
+                    document.querySelector('.romantic-container-overlay').style.backgroundColor = 'rgba(0,0,0, 0.7)';
+                    partyIcon.classList.remove("active");
+                    isParting = false;
+                },1000)
+            }
+        }
+        else{
+            resetcolor() ;
+        }
+    }
+
+    function resetcolor() {
+        document.querySelector('.romantic-container-overlay').style.backgroundColor = 'rgba(0,0,0, 0.7)';
+        clearInterval(colorChange);
+        partyIcon.classList.remove("active");
+        isParting = false;
+    }
 
 })
