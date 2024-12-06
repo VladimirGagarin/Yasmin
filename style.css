@@ -1110,7 +1110,7 @@ body {
   }
 
   .video-view.enlarge {
-    height: 60vh;
+    height: 60vh; 
   }
 
   .video-view.filtermode{
@@ -1283,6 +1283,8 @@ body {
 	}
 }
 
+
+  
   
   /* Paragraph Styling */
   .romantic-text p {
@@ -1426,13 +1428,14 @@ body {
     }
 
     .romantic-text h2:nth-child(1) {
-        margin-right: 50px;
+        margin-right: 100px;
         -webkit-text-stroke: 1px #03a9f4; /* Smaller text stroke */
     }
 
     .romantic-text h2:nth-child(2) {
-        display: none;
-        font-size: 3.5rem; /* Adjust size of second child text */
+        top:-30%;
+        left: 35%;
+        font-size: 3rem; /* Adjust size of second child text */
     }
     
     
@@ -1483,6 +1486,7 @@ body {
     .romantic-text p {
       font-size: 1.5rem;
       color: #f4e003;
+      top: -40%;
     }
   
     /* Floating Hearts */
@@ -1528,5 +1532,32 @@ body {
       left: 25%;
       animation-duration: 7.5s;
     }
+  }
+
+  @media (max-width: 768px) {
+    .romantic-text {
+      padding: 15px; /* Reduce padding for smaller screens */
+      font-size: 1rem; /* Adjust font size for readability */
+      height: 50vh; /* Reduce height to better fit smaller screens */
+      margin: 10px auto; /* Adjust margin for spacing */
+      width: 95%; /* Utilize more screen width */
+      border-radius: 8px; /* Slightly smaller border radius */
+    }
+  
+    .romantic-text h2 {
+      font-size: 3rem; /* Reduce font size for the heading */
+      top: 10%; /* Adjust positioning for better alignment */
+      left: 50%;
+      transform: translate(-50%, -10%);
+    }
+  
+    .romantic-text h2:nth-child(1) {
+      -webkit-text-stroke: 1px #03a9f4; /* Thinner stroke for smaller screens */
+    }
+  
+    .romantic-text h2:nth-child(2) {
+      animation: animate 3s ease-in-out infinite; /* Faster animation for smaller screens */
+    }
+  
   }
 /************************************************************************************************************************8*/  
