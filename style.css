@@ -835,6 +835,28 @@ body {
     z-index: 1;
 }
 
+.heartfelt-message{
+    position: absolute;
+    top: 40px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #f9f9f9;
+    color: #cf04f3;
+    width: 50px;
+    height:50px;
+    font-size: 24px;
+    background-color:transparent;
+    z-index: 4;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: transform 0.3s ease-in-out;
+}
+.heartfelt-message:hover{
+    transform: scale(1.2);
+}
+
 /* Styling for auth-content */
 .auth-content {
     position: relative;
@@ -962,3 +984,549 @@ body {
 .displayed-icon:hover {
     transform: scale(1.1);
 }
+
+/**************************************************************************************************************************************************/
+
+/* Overlay container */
+.romantic-container-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Dim overlay */
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  /* Close button */
+  .romantic-close, .romantic-closed-video {
+    position: absolute;
+    top: 40px;
+    left: 20px;
+    font-size: 2.3rem;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #ff4d4d;
+    color: #f0f0f0;
+    background-color: #ff4d4d;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .romantic-closed-video{
+    background-color: #45a049;
+    display: none;
+    right: 20px;
+    border-color: #45a049;
+    font-size: 1.8rem;
+  }
+  
+  .romantic-close:hover, .romantic-closed-video:hover{
+    transform: scale(1.5);
+    color: #f0f0f0;
+    background-color: #45a049;
+    border-color: #45a049;
+  }
+  
+  /* Content container */
+  .romantic-content {
+    background: rgba(255, 255, 255, 0.4);
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 600px;
+    border: 1px solid #f0f0f0;
+    overflow-y: auto;
+    height: 85vh;
+    scrollbar-width: none;
+  }
+
+  .romantic-content::-webkit-scrollbar{
+    display: none;
+  }
+  
+  /* Romantic music section */
+  .romantic-music {
+    margin-bottom: 20px;
+    text-align: center;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  
+  .romantic-music h3 {
+    font-size: 1.5rem;
+    color: #f9f9f9;
+    margin-bottom: 10px;
+  }
+  
+  .romantic-play-icon {
+    font-size: 1.8rem;
+    color: #f9f9f9;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid #f0f0f0;
+    transition: transform 0.3s ease;
+    margin-bottom: 10px;
+  }
+  
+  .romantic-play-icon:hover {
+    transform: scale(1.2);
+  }
+  
+  /* Romantic video section */
+  .romantic-video {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  
+  .romantic-video h3 {
+    font-size: 1.5rem;
+    color: #f0f0f0;
+    margin-bottom: 10px;
+  }
+  
+  .video-view {
+    width: 100%;
+    height: 40vh;
+    margin: 20px 0;
+    transition: 500ms ease-in-out;
+    position: relative;
+    border-radius: 10px;
+  }
+
+  .video-view.enlarge {
+    height: 60vh;
+  }
+
+  .video-view.filtermode{
+    border-radius: 10px;
+    position: absolute;
+    z-index: 9999;
+    width: 98%;
+    height: 93vh;
+    top: 45%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    background-color: #000;
+    border: 2px solid #f0f0f0;
+  }
+
+  .video-view.filtermode video{
+    border-radius: 10px;
+  }
+
+  .video-view.filtermode .romantic-closed-video {
+    display: flex;
+    z-index: 4;
+    right: 20px;
+  }
+  
+  .video-view video {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    object-fit: cover;
+  }
+
+
+  
+  /* Video controls */
+  .video-controls {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+  }
+  
+  .video-controls button {
+    font-size: 1.5rem;
+    padding: 10px 15px;
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid #f0f0f0;
+    color: #000;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+
+  .video-controls button.active{
+    background-color: rgba(88, 245, 4, 0.6);
+  }
+  
+  .video-controls button:hover {
+    background: rgba(255, 255, 255, 0.8);
+    color: black;
+    transform: scale(1.2);
+  }
+
+  .romantic-text {
+    text-align: center;
+    padding: 20px;
+    color: #fff;
+    background-color: #085104ca;
+    background: url('intro.png') center/cover no-repeat;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    margin: 20px auto;
+    width: 90%;
+    overflow: hidden;
+    height: 60vh;
+    display: none;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    animation: myAn 2s ease 0s 1 normal forwards;
+    transition: background 0.3s ease-in-out; /* Smooth transition for background color */
+}
+
+.romantic-text::before{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black overlay */
+    z-index: 1;
+}
+
+.romantic-text > * {
+    position: relative;
+    z-index: 2;
+}
+
+  
+  @keyframes myAn {
+	0% {
+		opacity: 0;
+		transform: translateY(250px) rotate(200deg);
+	}
+
+	100% {
+		opacity: 1;
+		transform: translateY(0) rotate(0deg);
+	}
+}
+
+  /* Heading Styling */
+  .romantic-text h2 {
+    font-size: 4.8rem; /* Large and bold */
+    font-weight: bold;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* Subtle shadow for text depth */
+    margin-bottom: 60px;
+    letter-spacing: 2px; /* Slight spacing for elegance */
+    color: #fff;
+	font-size: 8em;
+	position: absolute;
+	transform: translate(-50%, -50%);
+    top:0%;
+    left: 50%;
+    font-family: 'Raleway', sans-serif;
+    animation: fadeIn 2s ease-in-out; /* Simple animation for entrance */
+    
+  }
+
+.romantic-text h2:nth-child(1) {
+	color: transparent;
+	-webkit-text-stroke: 2px #03a9f4;
+}
+
+.romantic-text h2:nth-child(2) {
+	color: #03a9f4;
+	animation: animate 4s ease-in-out infinite;
+}
+
+@keyframes animate {
+	0%,
+	100% {
+		clip-path: polygon(
+			0% 45%,
+			16% 44%,
+			33% 50%,
+			54% 60%,
+			70% 61%,
+			84% 59%,
+			100% 52%,
+			100% 100%,
+			0% 100%
+		);
+	}
+
+	50% {
+		clip-path: polygon(
+			0% 60%,
+			15% 65%,
+			34% 66%,
+			51% 62%,
+			67% 50%,
+			84% 45%,
+			100% 46%,
+			100% 100%,
+			0% 100%
+		);
+	}
+}
+
+  
+  /* Paragraph Styling */
+  .romantic-text p {
+    font-size: 1.8rem; /* Medium size for supporting text */
+    font-style: italic; /* Adds a romantic feel */
+    letter-spacing: 1px;
+    line-height: 1.5;
+    margin-top: 10px;
+    color: #f4e003;
+    opacity: 0.9; /* Slightly lighter for contrast with heading */
+  }
+  
+  /* Add animation to the container */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+/* Floating Hearts */
+.hearts-container {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Hearts won't block clicks */
+  }
+  
+ /* General Heart Styling */
+.heart {
+    position: absolute;
+    bottom: 0;
+    width: 20px;
+    height: 20px;
+    background-color: transparent;
+    color: #fa2c52; /* Heart color */
+    font-size: 60px;
+    animation: float 8s infinite ease-in-out;
+    opacity: 0;
+  }
+  
+  /* Heart Animation */
+  @keyframes float {
+    0% {
+      transform: translateY(0) scale(1);
+      opacity: 0;
+    }
+    25% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-150vh) scale(1.5);
+      opacity: 0;
+    }
+  }
+  
+  /* Randomize Heart Positions */
+  .heart:nth-child(1) {
+    left: 10%;
+    animation-delay: 0s;
+    animation-duration: 6s;
+  }
+  
+  .heart:nth-child(2) {
+    left: 30%;
+    animation-delay: 1s;
+    animation-duration: 7s;
+  }
+  
+  .heart:nth-child(3) {
+    left: 50%;
+    animation-delay: 2s;
+    animation-duration: 8s;
+  }
+  
+  .heart:nth-child(4) {
+    left: 70%;
+    animation-delay: 3s;
+    animation-duration: 5s;
+  }
+  
+  .heart:nth-child(5) {
+    left: 90%;
+    animation-delay: 4s;
+    animation-duration: 6.5s;
+  }
+  
+  .heart:nth-child(6) {
+    left: 20%;
+    animation-delay: 1.5s;
+    animation-duration: 7.5s;
+  }
+  
+
+  @media (max-width: 800px) {
+    /* Overlay container */
+    .romantic-container-overlay {
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+  
+    /* Close button */
+    .romantic-close,.romantic-closed-video {
+      top: 45px;
+      left: 20px;
+      font-size: 1.8rem;
+      width: 45px;
+      height: 45px;
+      z-index: 100;
+    }
+  
+    /* Content container */
+    .romantic-content {
+      width: 95%;
+      max-width: none;
+      height: 85vh;
+      padding: 10px;
+    }
+  
+    .romantic-text {
+      padding: 19px;
+      height: 58vh;
+      font-size: 1.4rem;
+    }
+
+      /* Adjust the heading font size for smaller screens */
+    .romantic-text h2 {
+        font-size: 3rem; /* Smaller font size */
+        margin-bottom: 30px; /* Reduce margin */
+        letter-spacing: 1px; /* Slightly smaller letter-spacing */
+        text-align: center;
+    }
+
+    .romantic-text h2:nth-child(1) {
+        margin-right: 50px;
+        -webkit-text-stroke: 1px #03a9f4; /* Smaller text stroke */
+    }
+
+    .romantic-text h2:nth-child(2) {
+        display: none;
+        font-size: 3.5rem; /* Adjust size of second child text */
+    }
+    
+    
+  
+    /* Romantic music section */
+    .romantic-music {
+      margin-bottom: 15px;
+      padding: 10px;
+    }
+  
+    .romantic-play-icon {
+      font-size: 1.5rem;
+      width: 35px;
+      height: 35px;
+    }
+  
+    /* Romantic video section */
+    .romantic-video {
+      padding: 10px;
+    }
+    
+  
+    .video-view video {
+      width: 100%;
+      height: 100%;
+      border-radius: 8px;
+      object-fit: fill;
+    }
+  
+    /* Video controls */
+    .video-controls button {
+      font-size: 1.2rem;
+      padding: 8px 12px;
+    }
+  
+    /* Heading styling */
+    .romantic-text h2 {
+      font-size: 3.5rem;
+      position: relative;
+      top: 0;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Raleway', sans-serif;
+      animation: fadeIn 2s ease-in-out;
+    }
+  
+    /* Paragraph styling */
+    .romantic-text p {
+      font-size: 1.5rem;
+      color: #f4e003;
+    }
+  
+    /* Floating Hearts */
+    .hearts-container {
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+  
+    /* General heart styling */
+    .heart {
+      font-size: 50px;
+      animation-duration: 6s;
+    }
+  
+    /* Randomize heart positions */
+    .heart:nth-child(1) {
+      left: 15%;
+      animation-duration: 6s;
+    }
+    
+    .heart:nth-child(2) {
+      left: 35%;
+      animation-duration: 7s;
+    }
+  
+    .heart:nth-child(3) {
+      left: 55%;
+      animation-duration: 8s;
+    }
+  
+    .heart:nth-child(4) {
+      left: 75%;
+      animation-duration: 5s;
+    }
+  
+    .heart:nth-child(5) {
+      left: 85%;
+      animation-duration: 6.5s;
+    }
+  
+    .heart:nth-child(6) {
+      left: 25%;
+      animation-duration: 7.5s;
+    }
+  }
+/************************************************************************************************************************8*/  
