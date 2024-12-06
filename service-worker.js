@@ -17,7 +17,7 @@ const urlsToCache = [
   "/letter.mp3", "/love.mp3", "/love_letter.mp3", "/mileya.mp3",
   "/mltr_someday.mp3", "/my_sugar.mp3", "/perri.mp3",
   "/qr1.mp3", "/qr2.mp3", "/qr3.mp3", "/qr4.mp3", "/qr5.mp3",
-  "/qr6.mp3", "/qr7.mp3"
+  "/qr6.mp3", "/qr7.mp3", "/loveme.mp3", "/yasminvid.mp4"
 ];
 
 // Install the service worker and cache essential files
