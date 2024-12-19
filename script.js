@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const receiverTone = new Audio("receiver.mp3");
     const vibrate = new Audio("vib.mp3");
     const lovemSong = new Audio("loveme.mp3");
-    const introSong = new Audio("intro.mp3");
+    const readIntro = new Audio("love_letter.mp3");
 
     const dbcenter = "mongodb+srv://Vlad_Permaz:permaz2024@cluster0.upk0ngn.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
@@ -329,6 +329,93 @@ document.addEventListener('DOMContentLoaded', function () {
         
     ];
 
+    function playSongWithLyrics() {
+        // Replace with the correct file paths
+        const newAudio = new Audio('qr9.mp3');
+        const introSong = new Audio('intro.mp3');
+    
+        const loadingAnim = document.querySelector('.loading-page-yas');
+        const lyricsDiv = document.querySelector('.lyrics-song');
+        const loveText = document.querySelector('.love-text');
+        let songPlayed = false; // Flag to check if a song plays successfully
+    
+        loadingAnim.style.display = "flex";
+
+        const removeOverlay = () => {
+            setTimeout(function() {
+                loadingAnim.style.display = "none";
+            }, 6000);
+        };
+    
+        // Handle errors
+        const handleAudioError = () => {
+            if (!songPlayed) {
+                // Remove overlay if no songs play successfully
+                removeOverlay();
+            }
+        };
+    
+        const introSongLyrics = [
+            { text: "I'm gonna love you", duration: 4 },
+            { text: 'Until you hate me', duration: 3 },
+            { text: "now I'm gonna show you", duration: 3 },
+            { text: 'what really crazy', duration: 3 },
+            { text: 'you should know better', duration: 6 },
+            { text: "I'm gonna love you", duration: 10 }
+        ];
+    
+        // Function to display lyrics
+        function displayLyrics(lyrics) {
+            let index = 0;
+    
+            function showNextLine() {
+                if (index < lyrics.length) {
+                    lyricsDiv.textContent = lyrics[index].text; // Update lyrics text
+                    setTimeout(showNextLine, lyrics[index].duration * 1000); // Wait for the duration
+                    index++;
+                }
+            }
+    
+            showNextLine();
+        }
+    
+        // Start intro song
+        introSong.addEventListener('loadedmetadata', function () {
+            setTimeout(function () {
+                introSong.play().then(() => {
+                    songPlayed = true;
+                }).catch(handleAudioError);
+    
+                loveText.style.opacity = '0';
+                introSong.onended = function () {
+                    loveText.style.opacity = '1';
+                    setTimeout(function () {
+                        lyricsDiv.innerHTML = '';
+                        newAudio.play().then(() => {
+                            songPlayed = true;
+                        }).catch(handleAudioError);
+                    }, 1000);
+                };
+            }, 1000);
+        });
+    
+        // Display lyrics when the intro song starts playing
+        introSong.onplaying = function () {
+            displayLyrics(introSongLyrics);
+        };
+
+        newAudio.onended = function () {
+            loadingAnim.style.display = "none";
+        }
+    
+        introSong.onerror = handleAudioError;
+        newAudio.onerror = handleAudioError;
+    }
+    
+  
+    
+    playSongWithLyrics();
+
     
     InputPassCode.addEventListener("keydown", function (e) {
         if (e.key === "Enter") {
@@ -360,6 +447,7 @@ document.addEventListener('DOMContentLoaded', function () {
             authOverLay.style.display = "none";
             installOverlay.style.display = "none";
             InputPassCode.value = '';
+            playSongWithLyrics();
         } else {
             vibrate.play();
             authContent.classList.add("vibrate");
@@ -530,8 +618,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.addEventListener('visibilitychange', function () {
         if (document.visibilityState === 'hidden') {
             authOverLay.style.display = "flex";
-            installOverlay.style.display = "flex";
-
+            installOverlay.style.display = "flex"
             if(currentQuoteReader && !currentQuoteReader.paused) {
                 currentQuoteReader.pause();
                 QuoteReaderBtn.innerHTML = "&#128263;";
@@ -550,7 +637,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 isPlaying = false;
             }
 
-            if(currentAudioPlayer.audio && !currentAudioPlayer.audio.paused) {
+            if(currentAudioPlayer && !currentAudioPlayer.audio.paused) {
                 currentAudioPlayer.audio.pause();
                 document.querySelectorAll('.audio-player-container button').forEach(btn => {btn.innerHTML = "&#9654;"});
             }
@@ -559,7 +646,11 @@ document.addEventListener('DOMContentLoaded', function () {
             // Pause music, animation, etc.
         } else if (document.visibilityState === 'visible') {
             
-            
+            document.querySelector('.loading-page-yas').style.display = "flex";
+
+            setTimeout(function () {
+                document.querySelector('.loading-page-yas').style.display = "none";
+            },4000)
         }
     });
 
@@ -1137,11 +1228,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const videoPlayIcon = document.querySelectorAll('.video-controls button')[0];
     const filterIcon =   document.querySelectorAll('.video-controls button')[1];
     const partyIcon = document.querySelectorAll('.video-controls button')[2];
+    const readBtn = document.querySelectorAll('.video-controls button')[3];
     let isPlayingMusic = false;
     let isPlayingVideo = false;
     let isfiltering = false;
     let isParting = false;
     let colorChange;
+    let isReadingIntro = false;
 
 
     document.querySelector('.heartfelt-message').onclick = function () {
@@ -1251,6 +1344,65 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     };
 
+    readBtn.onclick = function () {
+        isReadingIntro = !isReadingIntro;
+        disableOtherBtns(document.querySelectorAll('.video-controls button'), readBtn, isReadingIntro);
+
+         // Now disable or enable musicPlayIcon directly
+        musicPlayIcon.classList.toggle("disabled", isReadingIntro);
+        document.querySelector('.love-letter-intro').style.display = isReadingIntro ? "block" : "none";
+
+        if(isReadingIntro) {
+            document.querySelector('.love-letter-intro').scrollIntoView({behavior:"smooth", block:"center"});
+            readIntro.play();
+        }
+        else {
+            readIntro.pause();
+            readIntro.currentTime = 0;
+        }
+
+        readIntro.onended = function () {
+            isReadingIntro = false;
+            musicPlayIcon.classList.toggle("disabled", isReadingIntro);
+            document.querySelector('.love-letter-intro').style.display = isReadingIntro ? "block" : "none";
+            disableOtherBtns(document.querySelectorAll('.video-controls button'), readBtn, isReadingIntro);
+
+            showImagePreview();
+        }
+    }
+
+    function disableOtherBtns(arrBtns, button, state) {
+        Array.from(arrBtns).forEach(btn => {
+            if(btn !== button){
+                btn.disabled = state;
+            }
+        })
+    }
+
+    function showImagePreview() {
+        const imgOverlay = document.querySelector('.overlay-img');
+        imgOverlay.style.display = "flex";
+
+        document.querySelectorAll('.overlay-img .actions button')[0].onclick = function () {
+            const imgDwnload = document.querySelector('.overlay-img .img-preview img');
+
+            const link = document.createElement('a');
+            link.href = imgDwnload.src;
+            link.download = "My_Dearest_Angel_ Yasmin.jpg";
+
+            document.body.appendChild(link);
+
+            link.click();
+
+            document.body.removeChild(link);
+            imgOverlay.style.display = "none";
+        }
+
+        document.querySelectorAll('.overlay-img .actions button')[1].onclick = function () {
+            imgOverlay.style.display = "none";
+        }
+    }
+
     document.querySelector('.romantic-closed-video').onclick = function () {
         document.querySelector('.video-view').classList.remove('filtermode');
         isfiltering = false;
@@ -1292,91 +1444,7 @@ document.addEventListener('DOMContentLoaded', function () {
         isParting = false;
     }
 
-    
-    (function () {
 
-        
-        // Replace with the correct file path
-        const newAudio = new Audio('qr9.mp3');
-
-        const loadingAnim = document.querySelector('.loading-page-yas');
-        const lyricsDiv = document.querySelector('.lyrics-song');
-        const loveText = document.querySelector('.love-text');
-        let songPlayed = false; // Flag to check if a song plays successfully
-
-        const removeOverlay = () => {
-            newAudio.play();
-            setTimeout(function() {
-                loadingAnim.style.display = "none";
-            },6000)
-        };
-
-
-        // Handle errors
-        const handleAudioError = () => {
-            if (!songPlayed) {
-                // Remove overlay if no songs play successfully
-                removeOverlay();
-            }
-        };
-        const introSongLyrics = [
-            { text: "I'm gonna love you", duration: 4 },
-            { text: 'Until you hate me', duration: 3 },
-            { text: "now I'm gonna show you", duration: 3 },
-            { text: 'what really crazy', duration: 3 },
-            { text: 'you should know better', duration: 6 },
-            { text: "I'm gonna love you", duration: 10 }
-        ];
-    
-        // Function to display lyrics
-        function displayLyrics(lyrics) {
-            let index = 0;
-    
-            function showNextLine() {
-                if (index < lyrics.length) {
-                    lyricsDiv.textContent = lyrics[index].text; // Update lyrics text
-                    setTimeout(showNextLine, lyrics[index].duration * 1000); // Wait for the duration
-                    index++;
-                }
-            }
-    
-            showNextLine();
-        }
-    
-        
-        introSong.addEventListener('loadedmetadata', function () {
-            setTimeout(function () {
-                introSong.play().then(() => {
-                    songPlayed = true;
-                }).catch(handleAudioError);
-                
-                loveText.style.opacity = '0';
-                introSong.onended = function () {
-                    loveText.style.opacity = '1';
-                    setTimeout(function () {
-                        lyricsDiv.innerHTML = '';
-                        newAudio.play().then(() => {
-                            songPlayed = true;
-                        }).catch(handleAudioError);
-                    }, 1000);
-                };
-
-                newAudio.onended = function () {
-                    loadingAnim.style.display = 'none';
-                };
-            }, 1000);
-        });
-
-        introSong.onplaying = function () {
-            displayLyrics(introSongLyrics);
-        };
-        
-
-        introSong.onerror = handleAudioError;
-        newAudio.onerror = handleAudioError;
-    })();
-    
-    
     function clearAllCookies() {
         const cookies = document.cookie.split(";");
     
