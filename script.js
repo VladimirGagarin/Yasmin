@@ -1367,11 +1367,10 @@ document.addEventListener('DOMContentLoaded', function () {
             }, 1000);
         });
 
-        introSong.ontimeupdate = function () {
-            if (introSong.currentTime > 0) {
-                displayLyrics(introSongLyrics);
-            }
+        introSong.onplaying = function () {
+            displayLyrics(introSongLyrics);
         };
+        
 
         introSong.onerror = handleAudioError;
         newAudio.onerror = handleAudioError;
