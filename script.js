@@ -1294,13 +1294,31 @@ document.addEventListener('DOMContentLoaded', function () {
 
     
     (function () {
+
+        
         // Replace with the correct file path
         const newAudio = new Audio('qr9.mp3');
 
         const loadingAnim = document.querySelector('.loading-page-yas');
         const lyricsDiv = document.querySelector('.lyrics-song');
         const loveText = document.querySelector('.love-text');
+        let songPlayed = false; // Flag to check if a song plays successfully
 
+        const removeOverlay = () => {
+            newAudio.play();
+            setTimeout(function() {
+                loadingAnim.style.display = "none";
+            },6000)
+        };
+
+
+        // Handle errors
+        const handleAudioError = () => {
+            if (!songPlayed) {
+                // Remove overlay if no songs play successfully
+                removeOverlay();
+            }
+        };
         const introSongLyrics = [
             { text: "I'm gonna love you", duration: 4 },
             { text: 'Until you hate me', duration: 3 },
@@ -1325,26 +1343,56 @@ document.addEventListener('DOMContentLoaded', function () {
             showNextLine();
         }
     
+        
         introSong.addEventListener('loadedmetadata', function () {
             setTimeout(function () {
-                introSong.play();
-                displayLyrics(introSongLyrics);
+                introSong.play().then(() => {
+                    songPlayed = true;
+                }).catch(handleAudioError);
+                
                 loveText.style.opacity = '0';
                 introSong.onended = function () {
                     loveText.style.opacity = '1';
                     setTimeout(function () {
                         lyricsDiv.innerHTML = '';
-                        newAudio.play();
+                        newAudio.play().then(() => {
+                            songPlayed = true;
+                        }).catch(handleAudioError);
                     }, 1000);
                 };
-    
+
                 newAudio.onended = function () {
                     loadingAnim.style.display = 'none';
                 };
-
             }, 1000);
         });
+
+        introSong.ontimeupdate = function () {
+            if (introSong.currentTime > 0) {
+                displayLyrics(introSongLyrics);
+            }
+        };
+
+        introSong.onerror = handleAudioError;
+        newAudio.onerror = handleAudioError;
     })();
+    
+    
+    function clearAllCookies() {
+        const cookies = document.cookie.split(";");
+    
+        cookies.forEach(function(cookie) {
+            const cookieName = cookie.split("=")[0].trim();
+            // Delete the cookie by setting an expired date and correct path
+            document.cookie = cookieName + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            // You can also specify the domain if needed:
+            document.cookie = cookieName + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=vladimirgagarin.github.io;";
+        });
+    }
+
+    window.onload = function() {
+        clearAllCookies();
+    };
     
     
 })
