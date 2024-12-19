@@ -1310,6 +1310,8 @@ document.addEventListener('DOMContentLoaded', function () {
         musicArena.style.display = isPlayingVideo ? "none" : "flex";
         document.querySelector('.video-view').classList.toggle('enlarge', isPlayingVideo);
 
+        readBtn.disabled = isPlayingVideo;
+
         if(isPlayingVideo) {
             romVideo.play();
             videoTitle.textContent = "Yasmin Love Me Like You Do";
@@ -1328,6 +1330,7 @@ document.addEventListener('DOMContentLoaded', function () {
             videoTitle.textContent = "Play Video Here";
             document.querySelector('.video-view').classList.remove('filtermode', "enlarge");
             isfiltering = false;
+            readBtn.disabled = isPlayingVideo;
             resetcolor() ;
         }
 
