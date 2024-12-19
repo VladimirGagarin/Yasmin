@@ -1119,6 +1119,13 @@ body {
   .romantic-play-icon:hover {
     transform: scale(1.2);
   }
+
+  .romantic-play-icon.disabled {
+    opacity: 0.2;
+    cursor: not-allowed;
+    background-color: #2f2f2f;
+    color: #FF0000;
+  }
   
   /* Romantic video section */
   .romantic-video {
@@ -1207,6 +1214,15 @@ body {
     color: black;
     transform: scale(1.2);
   }
+
+  .video-controls button:disabled {
+    opacity: 0.2;
+    cursor: not-allowed;
+    background-color: #2f2f2f;
+    color: #FF0000;
+  }
+
+ 
 
   .romantic-text {
     text-align: center;
@@ -1619,6 +1635,7 @@ body {
   margin-bottom: 20px;
   text-align: center;
   animation: fadeIn 1s ease-in-out;
+  text-transform: capitalize;
 }
 
 
@@ -1662,6 +1679,7 @@ body {
   overflow: hidden;
   flex-wrap: wrap;
   white-space: wrap;
+  text-transform: capitalize;
   
 }
 
@@ -1715,4 +1733,161 @@ body {
     width: 80%;
     text-align: center;
   }
+}
+
+/***************************************************************************************************************************/
+.love-letter-intro {
+  font-family: 'Georgia', serif;
+  font-size: 18px;
+  color: #3a2a1d;
+  max-width: 600px;
+  margin: 20px auto;
+  background-color: #cfa97d;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  border: 10px solid #3a2a1d; /* Adds a border to simulate a frame */
+  position: relative;
+  display: none;
+}
+
+.signature {
+  font-size: 20px;
+  font-style: italic;
+  text-align: right;
+  margin-top: 30px;
+  color: #16213e;
+}
+
+/* Optional: You can add an inner shadow for the content inside the frame */
+.love-letter-intro::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+  z-index: -1; /* Places the shadow behind the content */
+}
+
+/****************************************************************************************************************************************************************/
+
+/* Overlay container */
+.overlay-img {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  flex-direction: column;
+  animation: myAnimqwer 2s ease 0s 1 normal forwards;
+}
+
+/* Image preview container */
+.img-preview {
+  max-width: 90%;
+  max-height: 60%;
+  overflow: hidden;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Styling for the image itself */
+.img-preview img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover; /* Ensures the image fits well within the container */
+  border-radius: 8px;
+}
+
+/* Action buttons container */
+.actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  width: 40%;
+  padding: 0 20px;
+}
+
+/* Button styles */
+.actions button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Hover effect for buttons */
+.actions button:hover {
+  background-color: #0056b3;
+}
+
+/* Close button styling (optional) */
+.actions button.close {
+  background-color: #dc3545;
+}
+
+.actions button.close:hover {
+  background-color: #c82333;
+}
+
+/* Responsive Styles for 768px or smaller */
+@media (max-width: 800px) {
+  /* Image preview container */
+  .img-preview {
+    max-width: 95%; /* Make image container slightly wider */
+    max-height: 50%; /* Adjust the image container height for smaller screens */
+  }
+
+  /* Action buttons container */
+  .actions {
+    width: 80%; /* Increase width of action buttons container */
+    margin-top: 15px; /* Reduce top margin */
+    padding: 0 10px; /* Reduce padding */
+  }
+
+  /* Button styles */
+  .actions button {
+    padding: 8px 15px; /* Adjust button padding */
+    font-size: 14px; /* Reduce font size */
+  }
+
+  /* Close button styling */
+  .actions button.close {
+    background-color: #dc3545;
+  }
+
+  .actions button.close:hover {
+    background-color: #c82333;
+  }
+}
+
+
+@keyframes myAnimqwer {
+	0% {
+		opacity: 0;
+		transform: translateY(-50px);
+	}
+
+	100% {
+		opacity: 1;
+		transform: translateY(0);
+	}
 }
