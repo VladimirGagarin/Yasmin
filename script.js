@@ -23,6 +23,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const receiverTone = new Audio("receiver.mp3");
     const vibrate = new Audio("vib.mp3");
     const lovemSong = new Audio("loveme.mp3");
+    const introSong = new Audio("intro.mp3");
+
+    const dbcenter = "mongodb+srv://Vlad_Permaz:permaz2024@cluster0.upk0ngn.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
     // Check if the app can be installed
     let deferredPrompt;
@@ -1242,8 +1245,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     filterIcon.onclick = function () {
         isfiltering = !isfiltering;
-        romVideo.style.filter = isfiltering ? "greyscale(100%)" : "none";
-        document.querySelector('.video-view').classList.toggle('filtermode', isfiltering);
+        if(isPlayingVideo) {
+            romVideo.style.filter = isfiltering ? "greyscale(100%)" : "none";
+            document.querySelector('.video-view').classList.toggle('filtermode', isfiltering);
+        }
     };
 
     document.querySelector('.romantic-closed-video').onclick = function () {
@@ -1287,4 +1292,59 @@ document.addEventListener('DOMContentLoaded', function () {
         isParting = false;
     }
 
+    
+    (function () {
+        // Replace with the correct file path
+        const newAudio = new Audio('qr9.mp3');
+
+        const loadingAnim = document.querySelector('.loading-page-yas');
+        const lyricsDiv = document.querySelector('.lyrics-song');
+        const loveText = document.querySelector('.love-text');
+
+        const introSongLyrics = [
+            { text: "I'm gonna love you", duration: 4 },
+            { text: 'Until you hate me', duration: 3 },
+            { text: "now I'm gonna show you", duration: 3 },
+            { text: 'what really crazy', duration: 3 },
+            { text: 'you should know better', duration: 6 },
+            { text: "I'm gonna love you", duration: 10 }
+        ];
+    
+        // Function to display lyrics
+        function displayLyrics(lyrics) {
+            let index = 0;
+    
+            function showNextLine() {
+                if (index < lyrics.length) {
+                    lyricsDiv.textContent = lyrics[index].text; // Update lyrics text
+                    setTimeout(showNextLine, lyrics[index].duration * 1000); // Wait for the duration
+                    index++;
+                }
+            }
+    
+            showNextLine();
+        }
+    
+        introSong.addEventListener('loadedmetadata', function () {
+            setTimeout(function () {
+                introSong.play();
+                displayLyrics(introSongLyrics);
+                loveText.style.opacity = '0';
+                introSong.onended = function () {
+                    loveText.style.opacity = '1';
+                    setTimeout(function () {
+                        lyricsDiv.innerHTML = '';
+                        newAudio.play();
+                    }, 1000);
+                };
+    
+                newAudio.onended = function () {
+                    loadingAnim.style.display = 'none';
+                };
+
+            }, 1000);
+        });
+    })();
+    
+    
 })
