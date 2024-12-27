@@ -99,12 +99,23 @@
     
     <div class="auth-overlay">
         <div class="heartfelt-message"><span>&#10084;</span></div>
+        <div class="video-reviews"><span>&#9654;</span></div>
         <div class="auth-content">
             <label for="password">Enter Password</label>
             <input type="password" id="password" autocomplete="off" placeholder="Type here">
         </div>
     </div> 
 
+    <div class="video-overlay">
+        <video src="introvid4.mp4" preload="auto" poster="poster.jpg"></video>
+        <div class="loadingvideo-anim">
+            <div class="loading-spinner"></div>
+        </div>
+       <div class="video-overlay-controls">
+            <button class="play-btn" aria-label="Play Video">&#9654;</button> <!-- Play button -->
+       </div>
+    </div>
+    
     <div class="side-install-button-overlay">
         <div class="displayed-icon">&#128241;</div>
         <div class="hidden-button">
@@ -114,46 +125,8 @@
     
     <div class="romantic-container-overlay">
         <div class="romantic-close"><span>&times;</span></div>
+        <div class="play-icon-for-letter"><span>&#9654;</span></div>
         <div class="romantic-content">
-
-            <div class="romantic-music">
-                <h3>Play  Song Here</h3>
-                <div class="romantic-play-icon">
-                    <span>&#9654;</span>
-                </div>
-            </div>
-
-            <div class="romantic-video">
-                <h3>Play video Here</h3>
-                <div class="video-view">
-                    <div class="romantic-closed-video"><span>&times;</span></div>
-                    
-                    <video src="yasminvid.mp4">
-                        Your browser does not support the video tag.
-                    </video>
-                </div>
-                <div class="video-controls">
-                    <button id="play-pause">&#9654;</button> <!-- Play icon -->
-                    <button id="apply-filter">&#128247;</button> <!-- Filter icon -->
-                    <button id="party-mode">&#127881;</button> <!-- Party icon -->
-                    <button>&#128218;</button>
-                  </div>                  
-            </div>
-
-            <div class="romantic-text">
-                <h2>YASMIN</h2>
-                <h2>YASMIN</h2>
-                <p>Love Me Love Me Love Me</p>
-                <div class="hearts-container">
-                    <div class="heart">&#10084;</div>
-                    <div class="heart">&#10084;</div>
-                    <div class="heart">&#10084;</div>
-                    <div class="heart">&#10084;</div>
-                    <div class="heart">&#10084;</div>
-                    <div class="heart">&#10084;</div>
-                </div>
-            </div>
-
             <div class="love-letter-intro">
                 <p>My Dearest Angel Yasmin,</p>
                 <p>From the serendipitous moment our souls intertwined, my existence has been suffused with boundless euphoria. You are my luminescence, my solace, and the ineffable harmony to my being. In this vast cosmos of myriad possibilities, I shall unfalteringly choose you, time and again, without hesitation. Your love has etched its permanence into the very marrow of my heart, a sanctuary I revere with every beat. Through the vicissitudes of life’s odyssey, know this unwavering truth: my love for you transcends the bounds of eternity. Forever yours.</p>
@@ -168,10 +141,59 @@
             <img src="yasmin.jpg" alt="yasmin" loading="lazy">
         </div>
         <div class="actions">
-            <button>Download</button>
-            <button>Close</button>
+            <button id="downloadBtn">Download</button>
+            <button id="closeBtn">Close</button>
         </div>
     </div>
+    
+    <div class="overlay-videos-display">
+
+        <div class="close-overlay">
+            <span>&times;</span> <!-- Close Icon -->
+        </div>
+
+        <div class="video-container">
+
+            <div class="video-field">
+                <!-- Videos will be inserted here dynamically -->
+            </div>
+
+            <div class="overlay-play-button">
+                <!-- Progress bar -->
+                <div class="progress-track">
+                    <div class="progress-bar"></div>
+                </div>
+                <div class="controls">
+                    <!-- Left controls: Play and Volume -->
+                <div class="left-controls">
+                    <span class="play-icon">&#9654;</span> <!-- Play Icon -->
+                    <span class="volume-icon">&#128266;</span> <!-- Volume Icon -->
+                    <span>00:00 / 00:00</span>
+                </div>
+                <!-- Right controls: Full Screen and Like -->
+                <div class="right-controls">
+                    <span class="fullscreen-icon">&#x26F6;</span> <!-- Full Screen Icon -->
+                    <span class="like-icon">&#10084;</span> <!-- Like Icon -->
+                </div>
+                
+                </div>
+            </div>
+
+            <div class="loading-anim-video">
+                <div class="spinner"></div>
+            </div>
+        </div>
+
+        <div class="video-quote-caption"></div>
+        
+        <!-- Navigation Controls -->
+        <div class="carousel-controls">
+            <button class="prev-btn">&#9664;&#9664;</button> <!-- Previous Button -->
+            <button class="next-btn">&#9654;&#9654;</button> <!-- Next Button -->
+        </div>
+    </div>  
+    
+    
     <script src="script.js"></script>
 </body>
 </html>
