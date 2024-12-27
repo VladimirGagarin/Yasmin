@@ -1,11 +1,11 @@
 const CACHE_NAME = "Yasmin-App";
 const urlsToCache = [
   "/",
-  "/index.html",
-  "/style.css",
-  "/script.js",
-  "/logo.jpg",
-  "/intro.png",
+  "index.html",
+  "style.css",
+  "script.js",
+  "logo.jpg",
+  "intro.png",
   // Include all your mp3 and image files here
   "aladin.mp3", "baby.mp3", "brett.mp3", "chocolate.mp3",
   "chunariya.mp3", "endless_love_lionel_richie.mp3", "fly.mp3", 
