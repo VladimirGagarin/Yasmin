@@ -1798,6 +1798,7 @@ body {
   height: 100%;
   object-fit: cover; /* Ensures video covers the area */
   border-radius: 10px;
+
 }
 
 /* Overlay play button container */
@@ -2098,5 +2099,35 @@ body {
     border-radius: 5px; /* Smaller radius */
     height: 50vh;
     object-fit:fill;
+  }
+}
+
+/*------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+/* Define a class for the romantic message */
+.romantic-message {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 98%;
+  height: 98%;
+  font-size: 2.4rem;
+  color: white;
+  font-weight: bold;
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 10px;
+  z-index: 9999;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+}
+
+@media (max-width: 800px) {
+  .romantic-message {
+    width: 98%; /* Makes the message nearly full-width on smaller screens */
+    height: 98%; /* Adjusts height to fit smaller screens */
+    font-size: 1.2rem; /* Reduce font size for small screens */
+    padding: 5px; /* Reduced padding for small screens */
   }
 }
