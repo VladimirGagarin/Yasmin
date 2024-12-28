@@ -27,8 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const newAudio = new Audio('qr9.mp3');
     const introSong = new Audio('intro.mp3');
 
-    const dbcenter = "mongodb+srv://Vlad_Permaz:permaz2024@cluster0.upk0ngn.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-
+   
     // Check if the app can be installed
     let deferredPrompt;
     const installButton = document.querySelector('.hidden-button button');
@@ -347,6 +346,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const removeOverlay = () => {
             setTimeout(function() {
+                document.querySelector('.lyrics-song').innerHTML = '';
                 loadingAnim.style.display = "none";
                 showIntrovideo();
             }, 3000);
@@ -406,6 +406,12 @@ document.addEventListener('DOMContentLoaded', function () {
                             }).catch(handleAudioError);
                         }, 1000); // Delay before playing the new song
                     };
+                }
+                else{
+                    introSong.pause();
+                    newAudio.pause();
+                    loadingAnim.style.display = "none";
+                    document.querySelector('.lyrics-song').innerHTML = '';
                 }
             }, 1000); // Wait 1 second before checking display property
         });
@@ -538,9 +544,10 @@ document.addEventListener('DOMContentLoaded', function () {
             authOverLay.querySelector('.heartfelt-message').classList.remove('hide');
             document.querySelector('.loading-page-yas').style.display ='flex';
             setTimeout(function() {
+                document.querySelector('.lyrics-song').innerHTML = '';
                 document.querySelector('.loading-page-yas').style.display ='none';
                 showIntrovideo();
-            },6000)
+            },4000)
         } else {
             vibrate.play();
             authContent.classList.add("vibrate");
@@ -758,6 +765,7 @@ document.addEventListener('DOMContentLoaded', function () {
             document.querySelector('.loading-page-yas').style.display = "flex";
 
             setTimeout(function () {
+                document.querySelector('.lyrics-song').innerHTML = '';
                 document.querySelector('.loading-page-yas').style.display = "none";
                 if(!introSong.paused) introSong.pause();
                 if(!newAudio.paused)   newAudio.pause();
