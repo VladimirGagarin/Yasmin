@@ -24,6 +24,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const vibrate = new Audio("vib.mp3");
     const lovemSong = new Audio("loveme.mp3");
     const readIntro = new Audio("love_letter.mp3");
+    const newAudio = new Audio('qr9.mp3');
+    const introSong = new Audio('intro.mp3');
 
     const dbcenter = "mongodb+srv://Vlad_Permaz:permaz2024@cluster0.upk0ngn.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
@@ -44,6 +46,9 @@ document.addEventListener('DOMContentLoaded', function () {
     let attempt = 0;
     let currentQgameIndex = 0;
     let interval;
+    let isReadingletterIntro = false;
+
+    document.querySelector('.video-reviews').classList.add('hide');
 
     const gText =  hour < 12 ? "Good Morning Yasmin"  : (hour >= 12 && hour < 16 ? "Good Afternoon Yasmin" : "Good Evening Yasmin")
     greetingText.textContent = gText;
@@ -330,10 +335,7 @@ document.addEventListener('DOMContentLoaded', function () {
     ];
 
     function playSongWithLyrics() {
-        // Replace with the correct file paths
-        const newAudio = new Audio('qr9.mp3');
-        const introSong = new Audio('intro.mp3');
-    
+        
         const loadingAnim = document.querySelector('.loading-page-yas');
         const lyricsDiv = document.querySelector('.lyrics-song');
         const loveText = document.querySelector('.love-text');
@@ -344,15 +346,18 @@ document.addEventListener('DOMContentLoaded', function () {
         const removeOverlay = () => {
             setTimeout(function() {
                 loadingAnim.style.display = "none";
-            }, 6000);
+                showIntrovideo();
+            }, 3000);
         };
     
         // Handle errors
         const handleAudioError = () => {
-            if (!songPlayed) {
-                // Remove overlay if no songs play successfully
-                removeOverlay();
-            }
+            introSong.pause();
+            newAudio.pause();
+            // Remove overlay if no songs play successfully
+            removeOverlay();
+            songPlayed = false;
+
         };
     
         const introSongLyrics = [
@@ -382,22 +387,27 @@ document.addEventListener('DOMContentLoaded', function () {
         // Start intro song
         introSong.addEventListener('loadedmetadata', function () {
             setTimeout(function () {
-                introSong.play().then(() => {
-                    songPlayed = true;
-                }).catch(handleAudioError);
-    
-                loveText.style.opacity = '0';
-                introSong.onended = function () {
-                    loveText.style.opacity = '1';
-                    setTimeout(function () {
-                        lyricsDiv.innerHTML = '';
-                        newAudio.play().then(() => {
-                            songPlayed = true;
-                        }).catch(handleAudioError);
-                    }, 1000);
-                };
-            }, 1000);
+                // Correct comparison of the display property using getComputedStyle
+                const loadingAnimDisplay = window.getComputedStyle(loadingAnim).display;
+                if (loadingAnimDisplay === "flex") {
+                    introSong.play().then(() => {
+                        songPlayed = true;
+                    }).catch(handleAudioError);
+        
+                    loveText.style.opacity = '0';
+                    introSong.onended = function () {
+                        loveText.style.opacity = '1';
+                        setTimeout(function () {
+                            lyricsDiv.innerHTML = ''; // Clear the lyrics
+                            newAudio.play().then(() => {
+                                songPlayed = true;
+                            }).catch(handleAudioError);
+                        }, 1000); // Delay before playing the new song
+                    };
+                }
+            }, 1000); // Wait 1 second before checking display property
         });
+        
     
         // Display lyrics when the intro song starts playing
         introSong.onplaying = function () {
@@ -405,18 +415,94 @@ document.addEventListener('DOMContentLoaded', function () {
         };
 
         newAudio.onended = function () {
-            loadingAnim.style.display = "none";
+            removeOverlay();
         }
     
         introSong.onerror = handleAudioError;
         newAudio.onerror = handleAudioError;
+        introSong.addEventListener('stalled', function() {
+            handleAudioError();
+        });
+
+        newAudio.addEventListener('stalled', function() {
+            handleAudioError();
+        });
     }
     
   
     
     playSongWithLyrics();
 
+    const introsVideos = ['introvid4.mp4', 'Imajin_video.mp4','introvid5.mp4','Imajin_video (2).mp4', 'introvid.mp4','Imajin_video (1).mp4', 'introvid2.mp4', 'introvid3.mp4','introvid6.mp4'];
+    let currentVideoIntro = 0;
+
+    function showIntrovideo() {
+        const videoOverlay = document.querySelector('.video-overlay');
+        const waitingOverlay = document.querySelector('.video-overlay .loadingvideo-anim');
+        const video = document.querySelector('.video-overlay video');
+        const playBtn = document.querySelector('.video-overlay .video-overlay-controls button');
+        
+        // Update the video source to the next one in the introsVideos array
+        video.src = introsVideos[currentVideoIntro];
+        currentVideoIntro = (currentVideoIntro + 1) % introsVideos.length; // Move to the next video, loop to the start if at the end
     
+        // Show the video overlay
+        videoOverlay.style.display = "flex";
+    
+        // Show the loading animation if the video is buffering
+        video.addEventListener('waiting', function() {
+            waitingOverlay.style.display = "flex";
+        });
+    
+        // Show the loading animation if the video is stalled
+        video.addEventListener('stalled', function() {
+            waitingOverlay.style.display = "flex";
+        });
+    
+        // Hide the loading animation once the video starts playing
+        video.addEventListener('playing', function() {
+            waitingOverlay.style.display = "none";
+            document.querySelector('.video-overlay-controls').style.display = "none"; // Hide the play button once the video is playing
+        });
+    
+        // Hide the loading animation once the video is paused
+        video.addEventListener('pause', function() {
+            waitingOverlay.style.display = "none";
+        });
+    
+        // Hide the video overlay when the video ends and prepare for the next video
+        video.onended = function() {
+            videoOverlay.style.display = "none";
+            video.currentTime = 0;
+            document.querySelector('.video-overlay-controls').style.display = "flex"; // Show the play button again
+        };
+    
+        // Handle the 'canplaythrough' event when the video is ready to play
+        video.addEventListener('canplaythrough', function() {
+            waitingOverlay.style.display = "none";
+        });
+    
+        // Handle the 'canplay' event (when enough data is loaded to start playing)
+        video.addEventListener('canplay', function() {
+            waitingOverlay.style.display = "none"; // Hide loading spinner once the video is ready
+        });
+    
+        // Play the video when the play button is clicked
+        playBtn.addEventListener('click', function() {
+            video.play();
+            document.querySelector('.video-overlay-controls').style.display = "none"; // Hide play button after the video starts playing
+        });
+    
+        // Handle the visibility change event to pause the video when the window is hidden
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden) {
+                video.pause();
+                document.querySelector('.video-overlay-controls').style.display = "flex";
+                video.currentTime = 0; // Reset the video to the beginning
+            }
+        });
+    }    
+  
     InputPassCode.addEventListener("keydown", function (e) {
         if (e.key === "Enter") {
             e.preventDefault(); // Prevent default behavior
@@ -447,7 +533,12 @@ document.addEventListener('DOMContentLoaded', function () {
             authOverLay.style.display = "none";
             installOverlay.style.display = "none";
             InputPassCode.value = '';
-            playSongWithLyrics();
+            document.querySelector('.video-reviews').classList.remove('hide');
+            document.querySelector('.loading-page-yas').style.display ='flex';
+            setTimeout(function() {
+                document.querySelector('.loading-page-yas').style.display ='none';
+                showIntrovideo();
+            },6000)
         } else {
             vibrate.play();
             authContent.classList.add("vibrate");
@@ -482,11 +573,17 @@ document.addEventListener('DOMContentLoaded', function () {
     ProceedBtn.onclick = function () {
         IntroDiv.style.display = "none";
         leeterDiv.style.display = "block";
+
+        Reader.play();
+        isReadingletter = true;
+        document.querySelector('.letter-div .read-btn').innerHTML = "&#10074;&#10074;";
+        document.querySelector('.letter-div .read-btn').style.backgroundColor = "#0056b3";
+
         clearInterval(quoteInterval);
-        if(!currentQuoteReader.paused){
+        if(currentQuoteReader && !currentQuoteReader.paused){
             currentQuoteReader.pause();
         }
-       
+  
     }
 
     // Button click logic for playing audio
@@ -650,6 +747,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
             setTimeout(function () {
                 document.querySelector('.loading-page-yas').style.display = "none";
+                if(!introSong.paused) introSong.pause();
+                if(!newAudio.paused)   newAudio.pause();
             },4000)
         }
     });
@@ -1218,236 +1317,6 @@ document.addEventListener('DOMContentLoaded', function () {
     window.addEventListener('online', updateStatus);  // Fired when the user goes online
     window.addEventListener('offline', updateStatus); // Fired when the user goes offline
 
-    const musicArena = document.querySelector('.romantic-content .romantic-music');
-    const videoArena = document.querySelector(".romantic-content .romantic-video");
-    const romVideo = document.querySelector('.romantic-video .video-view video');
-    const musicPlayIcon = musicArena.querySelector('.romantic-play-icon');
-    const romanticText = document.querySelector('.romantic-content .romantic-text');
-    const  musicTitle = musicArena.querySelector('h3');
-    const videoTitle = videoArena.querySelector('h3');
-    const videoPlayIcon = document.querySelectorAll('.video-controls button')[0];
-    const filterIcon =   document.querySelectorAll('.video-controls button')[1];
-    const partyIcon = document.querySelectorAll('.video-controls button')[2];
-    const readBtn = document.querySelectorAll('.video-controls button')[3];
-    let isPlayingMusic = false;
-    let isPlayingVideo = false;
-    let isfiltering = false;
-    let isParting = false;
-    let colorChange;
-    let isReadingIntro = false;
-
-
-    document.querySelector('.heartfelt-message').onclick = function () {
-        document.querySelector('.romantic-container-overlay').style.display = "flex";
-    };
-    
-    document.querySelector('.romantic-close').onclick = function () {
-        document.querySelector('.romantic-container-overlay').style.display = "none";
-
-        if(!romVideo.paused){
-            romVideo.pause();
-            romVideo.currentTime = 0;
-            videoPlayIcon.innerHTML = "&#9654;";
-            isPlayingVideo = false;
-            
-        }
-
-        if(!lovemSong.paused) {
-            lovemSong.pause();
-            lovemSong.currentTime = 0;
-            musicPlayIcon.innerHTML = "&#9654;";
-            isPlayingMusic = false;
-        }
-
-
-        musicArena.style.display = "flex";
-        videoArena.style.display = "flex";
-        romanticText.style.display = "none";
-        musicTitle.textContent = "Play Song Here";
-        videoTitle.textContent = "Play Video Here";
-        document.querySelector('.video-view').classList.remove('filtermode', "enlarge");
-        isfiltering = false;
-    };
-
-    musicPlayIcon.onclick = function () {
-        isPlayingMusic = !isPlayingMusic;
-
-        musicPlayIcon.innerHTML = isPlayingMusic ? "&#10074;&#10074;" : "&#9654;";
-        videoArena.style.display = isPlayingMusic ? "none" : "flex";
-        romanticText.style.display = isPlayingMusic ? "flex" : "none";
-
-        if(isPlayingMusic) {
-            lovemSong.play();
-
-            musicTitle.textContent = "Yasmin Love Me";
-
-        }
-        else{
-            lovemSong.pause();
-            musicTitle.textContent = "Play Song Here";
-            resetcolor();
-           
-        }
-
-        lovemSong.onended =() => {
-            isPlayingMusic = false;
-        
-            lovemSong.currentTime = 0;
-            musicPlayIcon.innerHTML = "&#9654;";
-            videoArena.style.display = "flex";
-            romanticText.style.display = "none";
-            musicTitle.textContent = "Play Song Here";
-            
-        }
-
-        romVideo.currentTime = 0;
-    }
-
-    videoPlayIcon.onclick = function () {
-        isPlayingVideo = !isPlayingVideo;
-
-        videoPlayIcon.innerHTML = isPlayingVideo ? "&#10074;&#10074;" : "&#9654;";
-        musicArena.style.display = isPlayingVideo ? "none" : "flex";
-        document.querySelector('.video-view').classList.toggle('enlarge', isPlayingVideo);
-
-        readBtn.disabled = isPlayingVideo;
-
-        if(isPlayingVideo) {
-            romVideo.play();
-            videoTitle.textContent = "Yasmin Love Me Like You Do";
-        }
-        else{
-            romVideo.pause();
-            videoTitle.textContent = "Play Video Here";
-            resetcolor();
-        }
-
-
-        romVideo.onended = function () {
-            isPlayingVideo = false;
-            videoPlayIcon.innerHTML = "&#9654;";
-            musicArena.style.display = "flex";
-            videoTitle.textContent = "Play Video Here";
-            document.querySelector('.video-view').classList.remove('filtermode', "enlarge");
-            isfiltering = false;
-            readBtn.disabled = isPlayingVideo;
-            resetcolor() ;
-        }
-
-        lovemSong.currentTime = 0;
-        document.querySelector('.video-view').classList.remove('filtermode');
-        isfiltering = false;
-    }
-
-    filterIcon.onclick = function () {
-        isfiltering = !isfiltering;
-        if(isPlayingVideo) {
-            romVideo.style.filter = isfiltering ? "greyscale(100%)" : "none";
-            document.querySelector('.video-view').classList.toggle('filtermode', isfiltering);
-        }
-    };
-
-    readBtn.onclick = function () {
-        isReadingIntro = !isReadingIntro;
-        disableOtherBtns(document.querySelectorAll('.video-controls button'), readBtn, isReadingIntro);
-
-         // Now disable or enable musicPlayIcon directly
-        musicPlayIcon.classList.toggle("disabled", isReadingIntro);
-        document.querySelector('.love-letter-intro').style.display = isReadingIntro ? "block" : "none";
-
-        if(isReadingIntro) {
-            document.querySelector('.love-letter-intro').scrollIntoView({behavior:"smooth", block:"center"});
-            readIntro.play();
-        }
-        else {
-            readIntro.pause();
-            readIntro.currentTime = 0;
-        }
-
-        readIntro.onended = function () {
-            isReadingIntro = false;
-            musicPlayIcon.classList.toggle("disabled", isReadingIntro);
-            document.querySelector('.love-letter-intro').style.display = isReadingIntro ? "block" : "none";
-            disableOtherBtns(document.querySelectorAll('.video-controls button'), readBtn, isReadingIntro);
-
-            showImagePreview();
-        }
-    }
-
-    function disableOtherBtns(arrBtns, button, state) {
-        Array.from(arrBtns).forEach(btn => {
-            if(btn !== button){
-                btn.disabled = state;
-            }
-        })
-    }
-
-    function showImagePreview() {
-        const imgOverlay = document.querySelector('.overlay-img');
-        imgOverlay.style.display = "flex";
-
-        document.querySelectorAll('.overlay-img .actions button')[0].onclick = function () {
-            const imgDwnload = document.querySelector('.overlay-img .img-preview img');
-
-            const link = document.createElement('a');
-            link.href = imgDwnload.src;
-            link.download = "My_Dearest_Angel_ Yasmin.jpg";
-
-            document.body.appendChild(link);
-
-            link.click();
-
-            document.body.removeChild(link);
-            imgOverlay.style.display = "none";
-        }
-
-        document.querySelectorAll('.overlay-img .actions button')[1].onclick = function () {
-            imgOverlay.style.display = "none";
-        }
-    }
-
-    document.querySelector('.romantic-closed-video').onclick = function () {
-        document.querySelector('.video-view').classList.remove('filtermode');
-        isfiltering = false;
-    }
-
-    partyIcon.onclick = function () {
-        isParting = !isParting;
-        partyIcon.classList.toggle("active", isParting)
-        partymode(isParting);
-    }
-
-    function partymode(state) {
-        if(state) {
-            if(isPlayingVideo) {
-                colorChange = setInterval(function () {
-                    const randomcolor = Math.floor(Math.random() * 0xffffff);
-                    const hexColor = `#${randomcolor.toString(16).padStart(6, "0")}`;
-                    document.querySelector('.romantic-container-overlay').style.backgroundColor = hexColor;
-                },2000);
-            }
-            else{
-                document.querySelector('.romantic-container-overlay').style.backgroundColor = 'rgba(255,0,0, 0.7)';
-                setTimeout(function () {
-                    document.querySelector('.romantic-container-overlay').style.backgroundColor = 'rgba(0,0,0, 0.7)';
-                    partyIcon.classList.remove("active");
-                    isParting = false;
-                },1000)
-            }
-        }
-        else{
-            resetcolor() ;
-        }
-    }
-
-    function resetcolor() {
-        document.querySelector('.romantic-container-overlay').style.backgroundColor = 'rgba(0,0,0, 0.7)';
-        clearInterval(colorChange);
-        partyIcon.classList.remove("active");
-        isParting = false;
-    }
-
-
     function clearAllCookies() {
         const cookies = document.cookie.split(";");
     
@@ -1464,5 +1333,411 @@ document.addEventListener('DOMContentLoaded', function () {
         clearAllCookies();
     };
     
+
+    authOverLay.querySelector('.heartfelt-message').onclick = function () {
+        document.querySelector('.romantic-container-overlay .play-icon-for-letter').innerHTML = '&#10074;&#10074;';
+        readIntro.play();
+        isReadingletterIntro = true;
+        document.querySelector('.romantic-container-overlay').style.display = "flex";
+
+        readIntro.onended =  function () {
+            isReadingletterIntro = false;
+            document.querySelector('.romantic-container-overlay .play-icon-for-letter').innerHTML = isReadingletterIntro ? '&#10074;&#10074;' : '&#9654;';
+            displayImageOverlay ();
+        }
+    }
+
+    document.querySelector('.romantic-container-overlay .play-icon-for-letter').onclick = function () {
+        isReadingletterIntro = ! isReadingletterIntro;
+
+        this.innerHTML = isReadingletterIntro ? '&#10074;&#10074;' : '&#9654;';
+
+        if(isReadingletterIntro){
+            readIntro.play();
+        }
+        else{
+            readIntro.pause();
+        }
+
+        readIntro.onended =  function () {
+            isReadingletterIntro = false;
+            this.innerHTML = isReadingletterIntro ? '&#10074;&#10074;' : '&#9654;';
+            displayImageOverlay ();
+        }.bind(this)
+    }
+
+    document.querySelector('.romantic-container-overlay .romantic-close').onclick = function () {
+        isReadingletterIntro = false;
+        document.querySelector('.romantic-container-overlay .play-icon-for-letter').innerHTML = isReadingletterIntro ? '&#10074;&#10074;' : '&#9654;';
+        readIntro.pause();
+        readIntro.currentTime = 0;
+        document.querySelector('.romantic-container-overlay').style.display = "none";
+    }
+
     
+   // Function to display the overlay with the image
+    function displayImageOverlay() {
+        document.querySelector('.overlay-img').style.display = "flex";
+    }
+
+    // Function to handle image download
+    document.getElementById('downloadBtn').addEventListener('click', function() {
+        const img = document.querySelector('.img-preview img');
+        const link = document.createElement('a');
+        link.href = img.src;
+        link.download = 'Yasmin-Forever-Yours.jpg'; // Specify the download name
+        link.click(); // Trigger the download
+        document.querySelector('.overlay-img').style.display = "none";
+    });
+
+    // Function to close the overlay
+    document.getElementById('closeBtn').addEventListener('click', function() {
+        document.querySelector('.overlay-img').style.display = "none";
+    });
+
+    
+   // Get references
+    const playButton = document.querySelectorAll('.overlay-play-button .left-controls span')[0];
+    const MuteBtn = document.querySelectorAll('.overlay-play-button .left-controls span')[1];
+    const durationArea = document.querySelectorAll('.overlay-play-button .left-controls span')[2];
+    const videoContainer = document.querySelector('.video-container');
+    const videoField = videoContainer.querySelector('.video-field');
+    const progressBar = videoContainer.querySelector('.overlay-play-button .progress-track .progress-bar');
+    const overlay = document.querySelector('.overlay-videos-display');
+    const closeOverlayButton = document.querySelector('.close-overlay');
+    const fullScreenBtn = document.querySelectorAll('.overlay-play-button .right-controls span')[0]; 
+    const likeBtn = document.querySelectorAll('.overlay-play-button .right-controls span')[1];
+    const animVideo = document.querySelector('.video-container .loading-anim-video');
+    const videoCaption = document.querySelector('.video-quote-caption');
+    const videoControls = videoContainer.querySelector('.overlay-play-button');
+
+    // Video list
+    const videoList = [
+        {video: "vid1.mp4", quote: "No matter where life takes us, I’ll always be here for you, Yasmin.", post: "post1.jpg", liked: false},
+        {video: "vid2.mp4", quote: "If you leave, my heart will remain empty, lost without you, Yasmin.", post: "post2.jpg", liked: false},
+        {video: "vid3.mp4", quote: "You are the one I needed, and now I’ve found everything in you, Yasmin.", post: "post3.jpg", liked: false},
+        {video: "vid4.mp4", quote: "Our souls are threads of the same tapestry, woven together by love to create a bond nothing can tear apart, Yasmin.", post:"post4.jpg", liked:false},
+        {video: "vid5.mp4", quote: "No matter where the world pulls us, I’ll always find my way back to you, Yasmin. You’re my home.", post:"post5.jpg",liked:false},
+        {video: "vid6.mp4", quote: "Yasmin, you're not just a miracle to me; you're the reason I believe in the impossible.", post:"post6.jpg",liked:false},
+        {video: "vid7.mp4", quote: "Yasmin, your beauty is not just incredible—it's the light that makes everything more beautiful.", post:"post7.jpg",liked:false},
+        {video: "vid8.mp4", quote: "You are my light, Yasmin. Without you, I fade into darkness", post:"post8.jpg",liked:false},
+    ];
+    
+    let timeoutId;  
+    let currentVideoIndex = 0;
+    let isPlayingVideo = false;
+    let isMuted = false;
+    let isFullScreen = false;
+    let currentVideo = null;
+    let wasPlayingBeforeHidden = false;
+    let currentVideoElement = null; // Global reference to the current video element
+
+
+    // Function to load and display the current video
+    function loadVideo() {
+
+        progressBar.style.width = '0%';
+        // Create the video element
+        const videoElement = document.createElement('video');
+        videoElement.src = videoList[currentVideoIndex].video;
+        videoCaption.innerHTML = `<span>${videoList[currentVideoIndex].quote}<span>`;
+        videoElement.poster = videoList[currentVideoIndex].post;
+        videoElement.controls = false; // Optional: Hide default controls
+        videoField.innerHTML = ''; // Clear previous video
+        videoField.appendChild(videoElement); // Add new video element
+
+        currentVideoElement = videoElement;
+        isPlayingVideo = false;
+        currentVideo = videoList[currentVideoIndex]
+        animVideo.style.backgroundImage = `url(${videoList[currentVideoIndex].post})`;
+
+        // Load liked status from localStorage
+        const likedVideos = JSON.parse(localStorage.getItem('likedVideos')) || [];
+        currentVideo.liked = likedVideos.includes(currentVideo.video); // Assuming video URL is unique
+
+        likeBtn.classList.toggle('liked', currentVideo.liked);
+        animVideo.style.display = 'none';
+        // Update play button state
+        playButton.innerHTML = isPlayingVideo ? '&#10074;&#10074;' : '&#9654;';
+        playButton.classList.add('disbled');
+
+        setTimeout(function () {
+            togglePlayPause(currentVideoElement);
+            playButton.classList.remove('disbled');
+        },3000);
+
+        if(currentVideo.liked){
+            likeBtn.classList.add('liked');
+            isLiked = true;
+        }
+
+        // Play/Pause video on button click
+        playButton.onclick = () => togglePlayPause(currentVideoElement);
+
+        // Update progress bar
+        currentVideoElement.ontimeupdate = () => updateProgressBar(currentVideoElement);
+
+        // Play/Pause video on video click
+        videoField.onclick = () => togglePlayPause(currentVideoElement);
+
+        currentVideoElement.addEventListener('stalled', function () {
+            animVideo.style.display = "flex";
+            playButton.classList.add('disbled');
+            document.querySelectorAll('.carousel-controls button').forEach(btn => {btn.classList.add('disbled')});
+        });
+
+        currentVideoElement.addEventListener('waiting', function () {
+            animVideo.style.display = "flex";
+        });
+
+        currentVideoElement.addEventListener('playing', function () {
+            animVideo.style.display = "none";
+            playButton.classList.remove('disbled');
+            document.querySelectorAll('.carousel-controls button').forEach(btn => {btn.classList.remove('disbled')});
+        });
+
+
+        currentVideoElement.addEventListener('error', function () {
+            animVideo.style.display = "flex";
+            hideOverlay();
+        });
+
+        currentVideoElement.addEventListener('canplay', function () {
+            animVideo.style.display = "none";
+        });
+
+        currentVideoElement.addEventListener('canplaythrough', function () {
+            animVideo.style.display = "none";
+        });
+
+        currentVideoElement.addEventListener('loadedmetadata', function () {
+            animVideo.style.display = "none";
+        });
+
+        currentVideoElement.addEventListener('ended', function() {
+            animVideo.style.display = "none";
+            isPlayingVideo = false;
+            playButton.innerHTML = isPlayingVideo ? '&#10074;&#10074;' : '&#9654;';
+            progressBar.style.width = `0%`;
+            durationArea.textContent = '00:00 / 00:00';
+            currentVideoIndex = (currentVideoIndex + 1 + videoList.length) % videoList.length;
+            loadVideo();
+        });
+
+        // Show controls on mouse move, mouse over, touch start, or touch move
+        currentVideoElement.addEventListener('mousemove', () => toggleControls(true));
+        currentVideoElement.addEventListener('mouseover', () => toggleControls(true));
+        currentVideoElement.addEventListener('touchstart', () => toggleControls(true));
+        currentVideoElement.addEventListener('touchmove', () => toggleControls(true)); // For touch devices
+
+        // Hide controls when mouse leaves or after inactivity
+        currentVideoElement.addEventListener('mouseleave', () => toggleControls(false));
+
+        currentVideoElement.addEventListener('dblclick', function () {
+            isFullScreen = !isFullScreen;
+            toggleFullScreen(isFullScreen)
+        })
+    }
+
+    // Toggle Play/Pause
+    function togglePlayPause(videoElement) {
+        isPlayingVideo = !isPlayingVideo;
+        playButton.innerHTML = isPlayingVideo ? '&#10074;&#10074;' : '&#9654;';
+        if (isPlayingVideo) {
+            videoElement.play();
+            
+        } else {
+            videoElement.pause();
+        }
+
+        toggleControls(isPlayingVideo)
+    }
+
+   
+
+    function toggleControls(state) {
+        console.log(state)
+        if (state) {
+            videoControls.style.opacity = 1;
+            videoControls.style.pointerEvents = "auto";
+            // Clear previous timeout to avoid unexpected behavior if user interacts again
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(function() {
+                videoControls.style.opacity = 0;
+                videoControls.style.pointerEvents = "none";
+            }, 5000); // Hides the controls after 5 seconds of inactivity
+        } else {
+            videoControls.style.opacity = 1;
+            videoControls.style.pointerEvents = "auto";
+        }
+    }
+
+    // Update progress bar
+    function updateProgressBar(videoElement) {
+        const percent = videoElement.duration ? (videoElement.currentTime / videoElement.duration) * 100 : 0;
+    
+        progressBar.style.width = `${percent}%`;
+        durationArea.textContent = `${formattedTime(videoElement.currentTime)} / ${videoElement.duration ? formattedTime(videoElement.duration) : "00 : 00"}`;
+    }
+    
+
+    // Show overlay
+    function showOverlay() {
+        overlay.style.display = 'flex';
+        document.querySelectorAll('.carousel-controls button').forEach(btn => {btn.classList.add('disbled')});
+        loadVideo();
+        setTimeout(function() {
+            document.querySelectorAll('.carousel-controls button').forEach(btn => {btn.classList.remove('disbled')})
+        },4000)
+    }
+
+    // Hide overlay
+    function hideOverlay() {
+        const videoElement = videoContainer.querySelector('video');
+        if (videoElement) videoElement.pause();
+        overlay.style.display = 'none';
+        isPlayingVideo = false;
+        isMuted = false;
+        playButton.innerHTML = isPlayingVideo ? '&#10074;&#10074;' : '&#9654;';
+        MuteBtn.innerHTML = isMuted ? '&#128264': '&#128263';
+        currentVideoIndex = 0;
+        progressBar.style.width = '0%';
+        document.querySelectorAll('.carousel-controls button').forEach(btn => {btn.classList.add('disbled')});
+    }
+
+    // Next/Prev video
+    function changeVideo(direction) {
+        currentVideoIndex = (currentVideoIndex + direction + videoList.length) % videoList.length;
+        progressBar.style.width = '0%';
+        loadVideo();
+    }
+
+    // Event Listeners
+    document.querySelector('.next-btn').onclick = (event) => {
+        document.querySelectorAll('.carousel-controls button').forEach(btn => {btn.classList.add('disbled')});
+
+        changeVideo(1)
+
+        setTimeout(function () {
+              document.querySelectorAll('.carousel-controls button').forEach(btn => {btn.classList.remove('disbled')});
+        },5000);
+    }; // Next video
+
+    document.querySelector('.prev-btn').onclick = (event) => {
+        document.querySelectorAll('.carousel-controls button').forEach(btn => {btn.classList.add('disbled')});
+    
+        changeVideo(-1);
+
+        setTimeout(function () {
+            document.querySelectorAll('.carousel-controls button').forEach(btn => {btn.classList.remove('disbled')});
+        },5000);
+    }; // Previous video
+     
+    overlay.onclick = (e) => {
+    if (e.target === overlay) hideOverlay(); // Close overlay if clicked outside
+    };
+    closeOverlayButton.onclick = hideOverlay;
+
+    document.querySelector('.video-reviews').onclick = showOverlay;
+
+    
+    MuteBtn.onclick = function () {
+        isMuted = !isMuted;
+        const videoElement = videoField.querySelector('video');
+        videoElement.muted = isMuted;
+        MuteBtn.innerHTML = isMuted ? '&#128264': '&#128266';
+        animVideo.style.display =  isMuted ? "flex" : "none";
+
+        setTimeout(function () {
+            animVideo.style.display = 'none';
+        },500);
+    }
+
+    fullScreenBtn.onclick = function() {
+        isFullScreen = !isFullScreen;
+        fullScreenBtn.innerHTML = isFullScreen ? "&#9212;" : "&#x26F6;"; // Example icons, replace as needed
+            toggleFullScreen(isFullScreen);
+    };
+
+    function toggleFullScreen(state) {
+       
+        if (state) {
+            if (videoContainer.requestFullscreen) {
+                videoContainer.requestFullscreen();
+            } else if (videoContainer.mozRequestFullScreen) { 
+                videoContainer.mozRequestFullScreen();
+            } else if (videoContainer.webkitRequestFullscreen) { 
+                videoContainer.webkitRequestFullscreen();
+            } else if (videoContainer.msRequestFullscreen) { 
+                videoContainer.msRequestFullscreen();
+            }
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            }
+        }
+
+        fullScreenBtn.innerHTML = state ? "&#9212;" : "&#x26F6;";
+    }
+
+    // Like button functionality
+    likeBtn.onclick = function () {
+        currentVideo.liked = !currentVideo.liked;
+        likeBtn.classList.toggle('liked', currentVideo.liked);
+
+        // Update the liked videos in localStorage
+        let likedVideos = JSON.parse(localStorage.getItem('likedVideos')) || [];
+        if (currentVideo.liked) {
+            likedVideos.push(currentVideo.video); // Add video URL to the liked list
+        } else {
+            likedVideos = likedVideos.filter(vid => vid !== currentVideo.video); // Remove video URL from the liked list
+        }
+        
+        localStorage.setItem('likedVideos', JSON.stringify(likedVideos)); // Save updated liked videos list
+    }
+
+    document.addEventListener("visibilitychange", function() {
+    
+        if (document.hidden) {
+            if (isPlayingVideo) {
+                wasPlayingBeforeHidden = true; // Store state that video was playing
+            }
+
+            if(currentVideoElement && !currentVideoElement.paused) {
+                currentVideoElement.pause();
+            }
+
+            isPlayingVideo = false;
+            playButton.innerHTML = '&#9654;'; // Pause icon
+        } else {
+            if (wasPlayingBeforeHidden) {
+                setTimeout(function () {
+
+                    if(currentVideoElement && currentVideoElement.paused) {
+                        currentVideoElement.play();
+                    }
+                   
+                    isPlayingVideo = true;
+                    playButton.innerHTML = '&#10074;&#10074;'; // Pause icon
+                    wasPlayingBeforeHidden = false; // Reset the flag after resuming
+                },4000);
+            }
+        }
+    });
+
+    function formattedTime(audioDuration) {
+        const min = Math.floor(audioDuration / 60);
+        const sec = Math.floor(audioDuration % 60);
+
+        const fmin = min < 10 ? `0${min}` : min;
+        const fsec = sec < 10 ? `0${sec}`: sec;
+
+        return `${fmin?? "00"} : ${fsec?? "00"}`;
+    }
 })
