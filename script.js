@@ -444,72 +444,93 @@ document.addEventListener('DOMContentLoaded', function () {
     const introsVideos = ['introvid4.mp4', 'Imajin_video.mp4','introvid5.mp4','Imajin_video (2).mp4', 'introvid.mp4','Imajin_video (1).mp4', 'introvid2.mp4', 'introvid3.mp4','introvid6.mp4'];
     let currentVideoIntro = 0;
 
+    let videoStalledTimeout; // Timeout variable for stalled state
+
     function showIntrovideo() {
         const videoOverlay = document.querySelector('.video-overlay');
         const waitingOverlay = document.querySelector('.video-overlay .loadingvideo-anim');
         const video = document.querySelector('.video-overlay video');
         const playBtn = document.querySelector('.video-overlay .video-overlay-controls button');
         
-        // Update the video source to the next one in the introsVideos array
+        // Update the video source
         video.src = introsVideos[currentVideoIntro];
-        currentVideoIntro = (currentVideoIntro + 1) % introsVideos.length; // Move to the next video, loop to the start if at the end
+        currentVideoIntro = (currentVideoIntro + 1) % introsVideos.length; // Loop through the videos
     
         // Show the video overlay
         videoOverlay.style.display = "flex";
     
-        // Show the loading animation if the video is buffering
-        video.addEventListener('waiting', function() {
+        // Event Handlers
+        const handleStalled = () => {
             waitingOverlay.style.display = "flex";
-        });
     
-        // Show the loading animation if the video is stalled
-        video.addEventListener('stalled', function() {
-            waitingOverlay.style.display = "flex";
-        });
-    
-        // Hide the loading animation once the video starts playing
-        video.addEventListener('playing', function() {
-            waitingOverlay.style.display = "none";
-            document.querySelector('.video-overlay-controls').style.display = "none"; // Hide the play button once the video is playing
-        });
-    
-        // Hide the loading animation once the video is paused
-        video.addEventListener('pause', function() {
-            waitingOverlay.style.display = "none";
-        });
-    
-        // Hide the video overlay when the video ends and prepare for the next video
-        video.onended = function() {
-            videoOverlay.style.display = "none";
-            video.currentTime = 0;
-            document.querySelector('.video-overlay-controls').style.display = "flex"; // Show the play button again
+            // Set timeout if video remains stalled
+            videoStalledTimeout = setTimeout(() => {
+                videoOverlay.style.display = "none";
+                video.currentTime = 0; // Reset video
+                document.querySelector('.video-overlay-controls').style.display = "flex"; // Show controls
+            }, 8000); // 8 seconds
         };
     
-        // Handle the 'canplaythrough' event when the video is ready to play
-        video.addEventListener('canplaythrough', function() {
-            waitingOverlay.style.display = "none";
-        });
+        const handleWaiting = () => {
+            waitingOverlay.style.display = "flex";
+        };
     
-        // Handle the 'canplay' event (when enough data is loaded to start playing)
-        video.addEventListener('canplay', function() {
-            waitingOverlay.style.display = "none"; // Hide loading spinner once the video is ready
-        });
+        const handlePlaying = () => {
+            waitingOverlay.style.display = "none"; // Hide loading spinner
+            document.querySelector('.video-overlay-controls').style.display = "none"; // Hide controls
+            clearTimeout(videoStalledTimeout); // Clear stalled timeout if playing starts
+        };
     
-        // Play the video when the play button is clicked
-        playBtn.addEventListener('click', function() {
-            video.play();
-            document.querySelector('.video-overlay-controls').style.display = "none"; // Hide play button after the video starts playing
-        });
+        const handlePause = () => {
+            waitingOverlay.style.display = "none"; // Hide spinner on pause
+        };
     
-        // Handle the visibility change event to pause the video when the window is hidden
-        document.addEventListener('visibilitychange', function() {
+        const handleEnded = () => {
+            videoOverlay.style.display = "none";
+            video.currentTime = 0; // Reset video to the beginning
+            document.querySelector('.video-overlay-controls').style.display = "flex"; // Show play button
+        };
+    
+        const handleCanPlay = () => {
+            waitingOverlay.style.display = "none"; // Hide spinner when video is ready to play
+        };
+    
+        const handleVisibilityChange = () => {
             if (document.hidden) {
                 video.pause();
-                document.querySelector('.video-overlay-controls').style.display = "flex";
-                video.currentTime = 0; // Reset the video to the beginning
+                document.querySelector('.video-overlay-controls').style.display = "flex"; // Show play button
             }
+        };
+    
+        // Add event listeners (ensure they're not duplicated)
+        video.removeEventListener('stalled', handleStalled); // Prevent duplicates
+        video.addEventListener('stalled', handleStalled);
+    
+        video.removeEventListener('waiting', handleWaiting);
+        video.addEventListener('waiting', handleWaiting);
+    
+        video.removeEventListener('playing', handlePlaying);
+        video.addEventListener('playing', handlePlaying);
+    
+        video.removeEventListener('pause', handlePause);
+        video.addEventListener('pause', handlePause);
+    
+        video.removeEventListener('ended', handleEnded);
+        video.addEventListener('ended', handleEnded);
+    
+        video.removeEventListener('canplay', handleCanPlay);
+        video.addEventListener('canplay', handleCanPlay);
+    
+        document.removeEventListener('visibilitychange', handleVisibilityChange);
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+    
+        // Play the video when play button is clicked
+        playBtn.addEventListener('click', () => {
+            video.play();
+            document.querySelector('.video-overlay-controls').style.display = "none"; // Hide play button
         });
-    }    
+    }
+    
   
     InputPassCode.addEventListener("keydown", function (e) {
         if (e.key === "Enter") {
@@ -1466,6 +1487,9 @@ document.addEventListener('DOMContentLoaded', function () {
     let currentVideo = null;
     let wasPlayingBeforeHidden = false;
     let currentVideoElement = null; // Global reference to the current video element
+    let stallTimeout; // To track the timeout for the 'stalled' event
+    let waitTimeout;  // To track the timeout for the 'waiting' event
+
 
 
     // Function to load and display the current video
@@ -1518,23 +1542,39 @@ document.addEventListener('DOMContentLoaded', function () {
         currentVideoElement.addEventListener('stalled', function () {
             animVideo.style.display = "flex";
             playButton.classList.add('disbled');
+            stallTimeout = setTimeout(function() {
+                showRomanticMessage(6000);
+            },5000);
             document.querySelectorAll('.carousel-controls button').forEach(btn => {btn.classList.add('disbled')});
         });
 
         currentVideoElement.addEventListener('waiting', function () {
             animVideo.style.display = "flex";
+            waitTimeout = setTimeout(function() {
+                showRomanticMessage(6000);
+            },5000);
         });
 
         currentVideoElement.addEventListener('playing', function () {
             animVideo.style.display = "none";
             playButton.classList.remove('disbled');
+            clearTimeout(stallTimeout);
+            clearTimeout(waitTimeout);
             document.querySelectorAll('.carousel-controls button').forEach(btn => {btn.classList.remove('disbled')});
         });
 
+        currentVideoElement.addEventListener('loadeddata', function () {
+            animVideo.style.display = "none";
+            playButton.classList.remove('disbled');
+            clearTimeout(stallTimeout);
+            clearTimeout(waitTimeout);
+            document.querySelectorAll('.carousel-controls button').forEach(btn => {btn.classList.remove('disbled')});
+        });
 
         currentVideoElement.addEventListener('error', function () {
             animVideo.style.display = "flex";
-            hideOverlay();
+            showRomanticMessage(6000);
+            setTimeout(hideOverlay(),6000);
         });
 
         currentVideoElement.addEventListener('canplay', function () {
@@ -1556,7 +1596,8 @@ document.addEventListener('DOMContentLoaded', function () {
             progressBar.style.width = `0%`;
             durationArea.textContent = '00:00 / 00:00';
             currentVideoIndex = (currentVideoIndex + 1 + videoList.length) % videoList.length;
-            loadVideo();
+            showRomanticMessage(3000);
+            setTimeout(loadVideo(),4000)
         });
 
         // Show controls on mouse move, mouse over, touch start, or touch move
@@ -1570,7 +1611,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         currentVideoElement.addEventListener('dblclick', function () {
             isFullScreen = !isFullScreen;
-            toggleFullScreen(isFullScreen)
+            toggleFullScreen(isFullScreen);
+            showRomanticMessage(4000);
         });
 
         currentVideoElement.addEventListener("contextmenu", function (event) {
@@ -1692,11 +1734,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const videoElement = videoField.querySelector('video');
         videoElement.muted = isMuted;
         MuteBtn.innerHTML = isMuted ? '&#128264': '&#128266';
-        animVideo.style.display =  isMuted ? "flex" : "none";
-
-        setTimeout(function () {
-            animVideo.style.display = 'none';
-        },500);
+        showRomanticMessage(4000);
     }
 
     fullScreenBtn.onclick = function() {
@@ -1717,6 +1755,8 @@ document.addEventListener('DOMContentLoaded', function () {
             } else if (videoContainer.msRequestFullscreen) { 
                 videoContainer.msRequestFullscreen();
             }
+
+            showRomanticMessage(4000);
         } else {
             if (document.exitFullscreen) {
                 document.exitFullscreen();
@@ -1741,6 +1781,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let likedVideos = JSON.parse(localStorage.getItem('likedVideos')) || [];
         if (currentVideo.liked) {
             likedVideos.push(currentVideo.video); // Add video URL to the liked list
+            showRomanticMessage(4000);
         } else {
             likedVideos = likedVideos.filter(vid => vid !== currentVideo.video); // Remove video URL from the liked list
         }
@@ -1767,6 +1808,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     if(currentVideoElement && currentVideoElement.paused) {
                         currentVideoElement.play();
+                        showRomanticMessage(4000);
                     }
                    
                     isPlayingVideo = true;
@@ -1796,44 +1838,38 @@ document.addEventListener('DOMContentLoaded', function () {
         currentVideoElement.currentTime = (clientX / width) * duration;
     }
 
-    function showRomanticMessage() {
+    function showRomanticMessage(duration = 5000) {
         // Array of romantic messages
         const loveQuotesMessages = [
-            "Every moment with you Yasmin feels like magic. ❤️",
-            "In your eyes, I see my home, and in your heart, I find my peace. 💖",
-            "My world is complete because you're in it, Yasmin. 💫",
-            "To love you is to breathe in the sweetest air, Yasmin. 🍃",
-            "You are the melody my heart beats to, Yasmin. 🎶",
-            "With you, Yasmin, I have everything I ever dreamed of and more. 💘"
+            "Every moment with you, Yasmin, feels like an eternal dream woven in stars. ✨",
+            "In your eyes, Yasmin, I see the universe, and in your embrace, I find my home. 🌙",
+            "Being loved by you, Yasmin, is the greatest blessing; with you, my heart is always full. 💖",
+            "You are the rhythm to my soul, Yasmin, the melody that fills every silent moment. 🎶",
+            "My love for you, Yasmin, grows deeper with every heartbeat, and your presence makes my world complete. 💫",
+            "To love you, Yasmin, is like dancing on clouds, floating effortlessly through a world of our own. ☁️",
+            "In your smile, Yasmin, I find my greatest joy, and in your touch, I feel eternity. 💘",
+            "With every breath, Yasmin, I fall more deeply in love with you—an endless symphony of affection. 🎶",
+            "You, Yasmin, are my every thought, my every wish, and my forever love. Together, we are timeless. ⏳",
+            "The love we share, Yasmin, is a rare treasure, sparkling brighter than the stars in the night sky. 🌟"
         ];
-        
+          
+
         // Pick a random quote from the array
         const randomIndex = Math.floor(Math.random() * loveQuotesMessages.length);
         const message = document.createElement('div');
         message.innerHTML = loveQuotesMessages[randomIndex];
-        message.style.position = 'absolute';
-        message.style.top = '0';
-        message.style.left = '0';
-        message.style.width = '80%';
-        message.style.height = '80%';
-        message.style.fontSize = '2.4rem';
-        message.style.color = 'white';
-        message.style.fontWeight = 'bold';
-        message.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
-        message.style.padding = '10px';
-        message.style.zIndex = '9999';
-        message.style.textAlign = 'center';
-        message.style.display = 'flex';
-        message.style.alignItems = 'center';
-        message.style.justifyContent = 'center';
-      
+    
+        // Add the class for styling
+        message.classList.add('romantic-message');
+    
         // Append the message to the body or video container
         videoField.appendChild(message);
-      
-        // Remove the message after 3 seconds (or adjust the time as needed)
+    
+        // Remove the message after 3 seconds
         setTimeout(() => {
-          message.remove();
-        }, 3000);
+            message.remove();
+        }, duration);
     }
+    
     
 })
