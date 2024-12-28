@@ -65,14 +65,16 @@ self.addEventListener("fetch", (event) => {
 
       // Otherwise, try to fetch it from the network
       return fetch(event.request).then((response) => {
-        // Only cache successful responses for specific requests (e.g., images or audio files)
-        if (response.ok && event.request.url.endsWith('.mp3')) {
+        // Cache successful responses
+        if (response.ok) {
           caches.open(CACHE_NAME).then((cache) => {
+            // Cache all successful responses (could add conditions for specific types)
             cache.put(event.request, response.clone());
           });
         }
         return response;
       }).catch((error) => {
+        // Handle network errors and fallback to cache (e.g., for images)
         console.error("Fetch failed:", error);
         throw error;
       });
@@ -82,3 +84,4 @@ self.addEventListener("fetch", (event) => {
     })
   );
 });
+
