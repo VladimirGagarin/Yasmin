@@ -1836,6 +1836,7 @@ body {
   margin: 0 auto; /* Center horizontally */
   border-radius: 3px;
   overflow: hidden; /* Prevent overflow */
+  cursor: pointer;
 }
 
 .progress-bar {
