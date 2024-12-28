@@ -857,6 +857,11 @@ body {
     transform: scale(1.2);
 }
 
+.heartfelt-message.hide{
+  opacity: 0;
+  pointer-events: none;
+}
+
 .auth-overlay .video-reviews{
   position: absolute;
   bottom: 40px;
