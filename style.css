@@ -857,6 +857,33 @@ body {
     transform: scale(1.2);
 }
 
+.auth-overlay .video-reviews{
+  position: absolute;
+  bottom: 40px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #f9f9f9;
+  color: #007bff;
+  width: 50px;
+  height:50px;
+  font-size: 24px;
+  background-color:transparent;
+  z-index: 4;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: transform 0.3s ease-in-out;
+}
+.auth-overlay .video-reviews:hover{
+  transform: scale(1.2);
+}
+
+.auth-overlay .video-reviews.hide{
+  opacity: 0;
+  pointer-events: none;
+}
+
 /* Styling for auth-content */
 .auth-content {
     position: relative;
@@ -1019,597 +1046,6 @@ body {
     transform: scale(1.1);
 }
 
-/**************************************************************************************************************************************************/
-
-/* Overlay container */
-.romantic-container-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.8); /* Dim overlay */
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-  }
-  
-  /* Close button */
-  .romantic-close, .romantic-closed-video {
-    position: absolute;
-    top: 40px;
-    left: 20px;
-    font-size: 2.3rem;
-    cursor: pointer;
-    transition: color 0.3s ease;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    border: 2px solid #ff4d4d;
-    color: #f0f0f0;
-    background-color: #ff4d4d;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: transform 0.3s ease-in-out;
-  }
-  
-  .romantic-closed-video{
-    background-color: #45a049;
-    display: none;
-    right: 20px;
-    border-color: #45a049;
-    font-size: 1.8rem;
-  }
-  
-  .romantic-close:hover, .romantic-closed-video:hover{
-    transform: scale(1.5);
-    color: #f0f0f0;
-    background-color: #45a049;
-    border-color: #45a049;
-  }
-  
-  /* Content container */
-  .romantic-content {
-    background: rgba(255, 255, 255, 0.4);
-    padding: 20px;
-    border-radius: 10px;
-    width: 90%;
-    max-width: 600px;
-    border: 1px solid #f0f0f0;
-    overflow-y: auto;
-    height: 85vh;
-    scrollbar-width: none;
-  }
-
-  .romantic-content::-webkit-scrollbar{
-    display: none;
-  }
-  
-  /* Romantic music section */
-  .romantic-music {
-    margin-bottom: 20px;
-    text-align: center;
-    border-bottom: 1px solid #f0f0f0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-  }
-  
-  .romantic-music h3 {
-    font-size: 1.5rem;
-    color: #f9f9f9;
-    margin-bottom: 10px;
-  }
-  
-  .romantic-play-icon {
-    font-size: 1.8rem;
-    color: #f9f9f9;
-    cursor: pointer;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    border: 1px solid #f0f0f0;
-    transition: transform 0.3s ease;
-    margin-bottom: 10px;
-  }
-  
-  .romantic-play-icon:hover {
-    transform: scale(1.2);
-  }
-
-  .romantic-play-icon.disabled {
-    opacity: 0.2;
-    cursor: not-allowed;
-    background-color: #2f2f2f;
-    color: #FF0000;
-  }
-  
-  /* Romantic video section */
-  .romantic-video {
-    text-align: center;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-  }
-  
-  .romantic-video h3 {
-    font-size: 1.5rem;
-    color: #f0f0f0;
-    margin-bottom: 10px;
-  }
-  
-  .video-view {
-    width: 100%;
-    height: 40vh;
-    margin: 20px 0;
-    transition: 500ms ease-in-out;
-    position: relative;
-    border-radius: 10px;
-  }
-
-  .video-view.enlarge {
-    height: 60vh; 
-  }
-
-  .video-view.filtermode{
-    border-radius: 10px;
-    position: absolute;
-    z-index: 9999;
-    width: 98%;
-    height: 93vh;
-    top: 45%;
-    left:50%;
-    transform: translate(-50%, -50%);
-    background-color: #000;
-    border: 2px solid #f0f0f0;
-  }
-
-  .video-view.filtermode video{
-    border-radius: 10px;
-  }
-
-  .video-view.filtermode .romantic-closed-video {
-    display: flex;
-    z-index: 4;
-    right: 20px;
-  }
-  
-  .video-view video {
-    width: 100%;
-    height: 100%;
-    border-radius: 10px;
-    object-fit: cover;
-  }
-
-
-  
-  /* Video controls */
-  .video-controls {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-  }
-  
-  .video-controls button {
-    font-size: 1.5rem;
-    padding: 10px 15px;
-    background: rgba(255, 255, 255, 0.8);
-    border: 1px solid #f0f0f0;
-    color: #000;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: background 0.3s ease, transform 0.2s ease;
-  }
-
-  .video-controls button.active{
-    background-color: rgba(88, 245, 4, 0.6);
-  }
-  
-  .video-controls button:hover {
-    background: rgba(255, 255, 255, 0.8);
-    color: black;
-    transform: scale(1.2);
-  }
-
-  .video-controls button:disabled {
-    opacity: 0.2;
-    cursor: not-allowed;
-    background-color: #2f2f2f;
-    color: #FF0000;
-  }
-
- 
-
-  .romantic-text {
-    text-align: center;
-    padding: 20px;
-    color: #fff;
-    background-color: #085104ca;
-    background: url('intro.png') center/cover no-repeat;
-    border-radius: 10px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-    margin: 20px auto;
-    width: 90%;
-    overflow: hidden;
-    height: 60vh;
-    display: none;
-    position: relative;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    animation: myAn 2s ease 0s 1 normal forwards;
-    transition: background 0.3s ease-in-out; /* Smooth transition for background color */
-}
-
-.romantic-text::before{
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black overlay */
-    z-index: 1;
-}
-
-.romantic-text > * {
-    position: relative;
-    z-index: 2;
-}
-
-  
-  @keyframes myAn {
-	0% {
-		opacity: 0;
-		transform: translateY(250px) rotate(200deg);
-	}
-
-	100% {
-		opacity: 1;
-		transform: translateY(0) rotate(0deg);
-	}
-}
-
-  /* Heading Styling */
-  .romantic-text h2 {
-    font-size: 4.8rem; /* Large and bold */
-    font-weight: bold;
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* Subtle shadow for text depth */
-    margin-bottom: 60px;
-    letter-spacing: 2px; /* Slight spacing for elegance */
-    color: #fff;
-	font-size: 8em;
-	position: absolute;
-	transform: translate(-50%, -50%);
-    top:0%;
-    left: 50%;
-    font-family: 'Raleway', sans-serif;
-    animation: fadeIn 2s ease-in-out; /* Simple animation for entrance */
-    
-  }
-
-.romantic-text h2:nth-child(1) {
-	color: transparent;
-	-webkit-text-stroke: 2px #03a9f4;
-}
-
-.romantic-text h2:nth-child(2) {
-	color: #03a9f4;
-	animation: animate 4s ease-in-out infinite;
-}
-
-@keyframes animate {
-	0%,
-	100% {
-		clip-path: polygon(
-			0% 45%,
-			16% 44%,
-			33% 50%,
-			54% 60%,
-			70% 61%,
-			84% 59%,
-			100% 52%,
-			100% 100%,
-			0% 100%
-		);
-	}
-
-	50% {
-		clip-path: polygon(
-			0% 60%,
-			15% 65%,
-			34% 66%,
-			51% 62%,
-			67% 50%,
-			84% 45%,
-			100% 46%,
-			100% 100%,
-			0% 100%
-		);
-	}
-}
-
-
-  
-  
-  /* Paragraph Styling */
-  .romantic-text p {
-    font-size: 1.8rem; /* Medium size for supporting text */
-    font-style: italic; /* Adds a romantic feel */
-    letter-spacing: 1px;
-    line-height: 1.5;
-    margin-top: 10px;
-    color: #f4e003;
-    opacity: 0.9; /* Slightly lighter for contrast with heading */
-  }
-  
-  /* Add animation to the container */
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-/* Floating Hearts */
-.hearts-container {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    height: 100%;
-    pointer-events: none; /* Hearts won't block clicks */
-  }
-  
- /* General Heart Styling */
-.heart {
-    position: absolute;
-    bottom: 0;
-    width: 20px;
-    height: 20px;
-    background-color: transparent;
-    color: #fa2c52; /* Heart color */
-    font-size: 60px;
-    animation: float 8s infinite ease-in-out;
-    opacity: 0;
-  }
-  
-  /* Heart Animation */
-  @keyframes float {
-    0% {
-      transform: translateY(0) scale(1);
-      opacity: 0;
-    }
-    25% {
-      opacity: 1;
-    }
-    100% {
-      transform: translateY(-150vh) scale(1.5);
-      opacity: 0;
-    }
-  }
-  
-  /* Randomize Heart Positions */
-  .heart:nth-child(1) {
-    left: 10%;
-    animation-delay: 0s;
-    animation-duration: 6s;
-  }
-  
-  .heart:nth-child(2) {
-    left: 30%;
-    animation-delay: 1s;
-    animation-duration: 7s;
-  }
-  
-  .heart:nth-child(3) {
-    left: 50%;
-    animation-delay: 2s;
-    animation-duration: 8s;
-  }
-  
-  .heart:nth-child(4) {
-    left: 70%;
-    animation-delay: 3s;
-    animation-duration: 5s;
-  }
-  
-  .heart:nth-child(5) {
-    left: 90%;
-    animation-delay: 4s;
-    animation-duration: 6.5s;
-  }
-  
-  .heart:nth-child(6) {
-    left: 20%;
-    animation-delay: 1.5s;
-    animation-duration: 7.5s;
-  }
-  
-
-  @media (max-width: 800px) {
-    /* Overlay container */
-    .romantic-container-overlay {
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
-  
-    /* Close button */
-    .romantic-close,.romantic-closed-video {
-      top: 45px;
-      left: 20px;
-      font-size: 1.8rem;
-      width: 45px;
-      height: 45px;
-      z-index: 100;
-    }
-  
-    /* Content container */
-    .romantic-content {
-      width: 95%;
-      max-width: none;
-      height: 85vh;
-      padding: 10px;
-    }
-  
-    .romantic-text {
-      padding: 19px;
-      height: 58vh;
-      font-size: 1.4rem;
-    }
-
-      /* Adjust the heading font size for smaller screens */
-    .romantic-text h2 {
-        font-size: 3rem; /* Smaller font size */
-        margin-bottom: 30px; /* Reduce margin */
-        letter-spacing: 1px; /* Slightly smaller letter-spacing */
-        text-align: center;
-    }
-
-    .romantic-text h2:nth-child(1) {
-        margin-right: 100px;
-        -webkit-text-stroke: 1px #03a9f4; /* Smaller text stroke */
-    }
-
-    .romantic-text h2:nth-child(2) {
-        top:-30%;
-        left: 35%;
-        font-size: 3rem; /* Adjust size of second child text */
-    }
-    
-    
-  
-    /* Romantic music section */
-    .romantic-music {
-      margin-bottom: 15px;
-      padding: 10px;
-    }
-  
-    .romantic-play-icon {
-      font-size: 1.5rem;
-      width: 35px;
-      height: 35px;
-    }
-  
-    /* Romantic video section */
-    .romantic-video {
-      padding: 10px;
-    }
-    
-  
-    .video-view video {
-      width: 100%;
-      height: 100%;
-      border-radius: 8px;
-      object-fit: fill;
-    }
-  
-    /* Video controls */
-    .video-controls button {
-      font-size: 1.2rem;
-      padding: 8px 12px;
-    }
-  
-    /* Heading styling */
-    .romantic-text h2 {
-      font-size: 3.5rem;
-      position: relative;
-      top: 0;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-family: 'Raleway', sans-serif;
-      animation: fadeIn 2s ease-in-out;
-    }
-  
-    /* Paragraph styling */
-    .romantic-text p {
-      font-size: 1.5rem;
-      color: #f4e003;
-      top: -40%;
-    }
-  
-    /* Floating Hearts */
-    .hearts-container {
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-    }
-  
-    /* General heart styling */
-    .heart {
-      font-size: 50px;
-      animation-duration: 6s;
-    }
-  
-    /* Randomize heart positions */
-    .heart:nth-child(1) {
-      left: 15%;
-      animation-duration: 6s;
-    }
-    
-    .heart:nth-child(2) {
-      left: 35%;
-      animation-duration: 7s;
-    }
-  
-    .heart:nth-child(3) {
-      left: 55%;
-      animation-duration: 8s;
-    }
-  
-    .heart:nth-child(4) {
-      left: 75%;
-      animation-duration: 5s;
-    }
-  
-    .heart:nth-child(5) {
-      left: 85%;
-      animation-duration: 6.5s;
-    }
-  
-    .heart:nth-child(6) {
-      left: 25%;
-      animation-duration: 7.5s;
-    }
-  }
-
-  @media (max-width: 768px) {
-    .romantic-text {
-      padding: 15px; /* Reduce padding for smaller screens */
-      font-size: 1rem; /* Adjust font size for readability */
-      height: 50vh; /* Reduce height to better fit smaller screens */
-      margin: 10px auto; /* Adjust margin for spacing */
-      width: 95%; /* Utilize more screen width */
-      border-radius: 8px; /* Slightly smaller border radius */
-    }
-  
-    .romantic-text h2 {
-      font-size: 3rem; /* Reduce font size for the heading */
-      top: 10%; /* Adjust positioning for better alignment */
-      left: 50%;
-      transform: translate(-50%, -10%);
-    }
-  
-    .romantic-text h2:nth-child(1) {
-      -webkit-text-stroke: 1px #03a9f4; /* Thinner stroke for smaller screens */
-    }
-  
-    .romantic-text h2:nth-child(2) {
-      animation: animate 3s ease-in-out infinite; /* Faster animation for smaller screens */
-    }
-  
-  }
 /************************************************************************************************************************8*/  
 
 .loading-page-yas {
@@ -1735,43 +1171,6 @@ body {
   }
 }
 
-/***************************************************************************************************************************/
-.love-letter-intro {
-  font-family: 'Georgia', serif;
-  font-size: 18px;
-  color: #3a2a1d;
-  max-width: 600px;
-  margin: 20px auto;
-  background-color: #cfa97d;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  border: 10px solid #3a2a1d; /* Adds a border to simulate a frame */
-  position: relative;
-  display: none;
-}
-
-.signature {
-  font-size: 20px;
-  font-style: italic;
-  text-align: right;
-  margin-top: 30px;
-  color: #16213e;
-}
-
-/* Optional: You can add an inner shadow for the content inside the frame */
-.love-letter-intro::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.05);
-  border-radius: 10px;
-  z-index: -1; /* Places the shadow behind the content */
-}
-
 /****************************************************************************************************************************************************************/
 
 /* Overlay container */
@@ -1890,4 +1289,808 @@ body {
 		opacity: 1;
 		transform: translateY(0);
 	}
+}
+
+/*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+/* Video Overlay */
+.video-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 87, 179, 0.6); /* Semi-transparent blue overlay */
+  display: none; /* Initially hidden */
+  align-items: center;
+  justify-content: center;
+  z-index: 1100;
+  transition: opacity 0.3s ease-in-out; /* Smooth fade-in/out */
+  flex-direction: column;
+}
+
+/* Video Styling */
+.video-overlay video {
+  max-width: 90%; /* Keeps the video within the viewport */
+  max-height: 90%; /* Keeps the video within the viewport */
+  object-fit: contain; /* Ensures the video maintains its aspect ratio */
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Loading Animation Overlay */
+.video-overlay .loadingvideo-anim {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* Loading Spinner */
+.loadingvideo-anim .loading-spinner {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 6px solid transparent;
+  border-top: 6px solid #1453ab;
+  animation: spinner 1.5s linear infinite;
+}
+
+/* Play Button Styling */
+.video-overlay-controls {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  color: white;
+  z-index: 2; /* Above the video */
+}
+
+.video-overlay-controls .play-btn {
+  width: 80px;
+  height: 80px;
+  border: 3px solid white;
+  border-radius: 50%;
+  color: #048ff3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3rem;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s; /* Smooth hover effect */
+}
+
+.video-overlay-controls .play-btn:hover {
+  background-color: #0056b3;
+  color: #f9f9f9;
+}
+
+/* Spinner Animation */
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Fade In and Out Effect */
+.video-overlay.fade-out {
+  opacity: 0;
+  pointer-events: none; /* Prevent interaction when faded out */
+}
+
+
+
+@media (max-width: 800px) {
+  /* Video Overlay */
+  .video-overlay {
+    flex-direction: column;
+    background-color: rgba(0, 87, 179, 0.8); /* Slightly darker for better visibility */
+    
+  }
+
+  /* Video Styling */
+  .video-overlay video {
+    width: 99%; /* Ensure the video fits within the smaller screen */
+    height: 90%; /* Avoid the video taking too much vertical space */
+    border-radius: 8px;
+    object-fit: fill;
+  }
+
+  /* Play Button Styling */
+  .video-overlay-controls .play-btn {
+    width: 60px;
+    height: 60px;
+    font-size: 2.5rem;
+    border: 2px solid white; /* Slightly thinner border */
+  }
+
+  /* Loading Spinner */
+  .loadingvideo-anim .loading-spinner {
+    width: 50px; /* Smaller spinner for compact screens */
+    height: 50px;
+    border-width: 5px;
+  }
+
+  /* Loading Animation Overlay */
+  .video-overlay .loadingvideo-anim {
+    border-radius: 8px;
+  }
+}
+
+
+/*---------------------------------------------------------------------------------------------------------------------------*/
+
+/* Container for the video list */
+.video-list {
+  margin: 20px auto;
+  padding: 10px;
+  max-width: 600px; /* Set a max width for better readability */
+  background-color: #f7f7f7;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Unordered list styles */
+.video-list ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* List item styles */
+.video-list ul li {
+  font-size: 18px;
+  font-family: 'Arial', sans-serif;
+  padding: 12px 20px;
+  margin: 10px 0;
+  background-color: #1453ab;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  color: #f0f0f0;
+}
+
+/* Hover effect for list items */
+.video-list ul li:hover {
+  background-color: #f0f0f0;
+  color: #1453ab;
+  transform: translateX(5px); /* Slightly shift the item when hovered */
+}
+
+/* Active state (when clicked) */
+.video-list ul li.active {
+  background-color: #1453ab;
+  color: white;
+  font-weight: bold;
+}
+
+/* Active state (when clicked) */
+.video-list ul li.disable {
+  background-color: #1453ab;
+  color: white;
+  font-weight: bold;
+  pointer-events: none;
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* Responsive styling for smaller screens */
+@media screen and (max-width: 800px) {
+  .video-list {
+      max-width: 100%;
+      padding: 8px;
+  }
+
+  .video-list ul li {
+      font-size: 16px;
+      padding: 10px 15px;
+  }
+}
+
+
+/*--------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+/* Overlay container */
+.romantic-container-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8); /* Dim overlay */
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  backdrop-filter: blur(5px); /* Soft background blur */
+  transition: opacity 0.3s ease-in-out; /* Smooth fade-in/fade-out effect */
+}
+
+/* Close button */
+.romantic-close {
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  font-size: 2.5rem;
+  cursor: pointer;
+  transition: transform 0.3s ease, color 0.3s ease;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 2px solid #ff4d4d;
+  color: #fff;
+  background-color: #ff4d4d;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 3;
+}
+
+.romantic-close:hover {
+  transform: scale(1.2);
+  background-color: #45a049;
+  border-color: #45a049;
+  color: #f0f0f0;
+}
+
+/* Play icon styling */
+.play-icon-for-letter {
+  position: absolute;
+  top: 40px;
+  left: 40px; /* Position it on the right side, slightly apart from the close button */
+  font-size: 2.5rem;
+  width: 50px;
+  height: 50px;
+  color: #0056b3;
+  cursor: pointer;
+  transition: transform 0.3s ease, color 0.3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 3;
+}
+
+.play-icon-for-letter:hover {
+  transform: scale(1.2);
+  color: #fff;
+  background-color: #ff4d4d;
+  box-shadow: 0 6px 15px rgba(255, 77, 77, 0.6);
+}
+
+/* Content area */
+.romantic-content {
+  background: transparent; /* Soft gradient */
+  padding: 40px;
+  border-radius: 30px;
+  text-align: center;
+  max-width: 900px;
+  width: 90%;
+  animation: fadeIn 1s ease-out; /* Gentle fade-in animation */
+}
+
+/* Love letter styling */
+.love-letter-intro {
+  font-family: 'Georgia', serif;
+  font-size: 20px;
+  color: #3a2a1d;
+  max-width: 700px;
+  margin: 0 auto;
+  background-color: #fff8f0; /* Soft, off-white background for the letter */
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  border: 10px solid #3a2a1d;
+  position: relative;
+  animation: letterGlow 1.5s infinite alternate; /* Glowing effect on the letter */
+  text-align: justify;
+  line-height: 1.6;
+}
+
+/* Letter glow animation */
+@keyframes letterGlow {
+  0% {
+    box-shadow: 0 0 15px rgba(255, 182, 193, 0.7);
+  }
+  100% {
+    box-shadow: 0 0 30px rgba(255, 182, 193, 1);
+  }
+}
+
+/* Signature styling */
+.signature {
+  font-size: 24px;
+  font-style: italic;
+  text-align: right;
+  margin-top: 30px;
+  color: #5c3e42;
+  letter-spacing: 2px; /* Slight letter-spacing for elegance */
+}
+
+/* Optional: Inner shadow for content box */
+.love-letter-intro::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+  z-index: -1;
+}
+
+/* Keyframes for fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+/* Media query for small screens (max-width 768px) */
+@media (max-width: 800px) {
+  
+  /* Overlay container adjustments */
+  .romantic-container-overlay {
+    padding: 20px 10px; /* Add padding to prevent edges from feeling cramped */
+  }
+  
+  /* Close button adjustments */
+  .romantic-close {
+    top: 20px;
+    right: 20px;
+    font-size: 2rem; /* Reduce font size for smaller screens */
+    width: 40px;
+    height: 40px;
+  }
+
+  /* Play icon adjustments */
+  .play-icon-for-letter {
+    top: 20px;
+    left: 20px; /* Position the play icon closer to the edge */
+    font-size: 2.5rem; /* Slightly smaller play icon */
+  }
+
+  .romantic-content {
+    padding: 10px;
+    width: 100%; /* Full width on smaller screens */
+    max-width: none; /* Allow the content box to use the full width */
+    border-radius: 15px; /* Adjust border radius for a more compact design */
+  }
+
+  /* Love letter text adjustments */
+  .love-letter-intro {
+    font-size: 16px; /* Smaller font size for readability on small screens */
+    padding: 20px; /* Adjust padding for a more balanced look */
+    border: 8px solid #3a2a1d; /* Slightly smaller border */
+    height: 100%;
+    text-align: justify; /* Justify text to align both the left and right edges */
+    line-height: 1.6; /* Add more space between lines for improved readability */
+    hyphens: auto; /* Enable automatic hyphenation to split long words */
+}
+
+
+  .signature {
+    font-size: 20px; /* Reduce signature font size */
+  }
+
+  /* Adjust animation timing for smaller screens */
+  .romantic-content, .love-letter-intro {
+    animation: none; /* Disable animations to improve performance on mobile */
+  }
+
+  /* Optional: Adjust padding on smaller screens */
+  .love-letter-intro::before {
+    padding: 10px; /* Less padding on the inner shadow */
+  }
+}
+
+
+/*-----------------------------------------------------------------------------------------------------------------------------------------------------------*/
+/* Overlay container styling */
+.overlay-videos-display {
+  display: none; /* Hidden by default */
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.2); /* Dark background with transparency */
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  color: white;
+  flex-direction: column;
+  overflow-y: auto;
+  padding:  20px;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+/* Close button */
+.close-overlay {
+  position: absolute;
+  top: 20px;
+  right: 50px;
+  font-size: 24px;
+  background: rgba(255, 0, 0, 0.8);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  color: #e5e5e5;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  z-index: 4;
+}
+
+.close-overlay:hover {
+  background-color: rgba(255, 255, 255, 0.9);
+  transform: scale(1.2);
+  color: #FF0000;
+}
+
+/* Video container with glowing shadow animation */
+.video-container {
+  position: relative;
+  width: 80%;
+  max-width: 1200px; /* Larger for better visibility */
+  height: 80%; /* Fill most of the screen */
+  background-color: black;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  margin-top: 50px;
+  animation: glow-shadow 2s infinite alternate; /* Apply glow animation */
+}
+
+/* Glow shadow animation */
+@keyframes glow-shadow {
+  0% {
+    box-shadow: 0 0 15px rgba(2, 80, 248, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.8); /* Brighter cyan glow */
+  }
+  100% {
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
+  }
+}
+
+
+/* Video field */
+.video-field {
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  position: relative;
+}
+
+.video-field video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures video covers the area */
+  border-radius: 10px;
+}
+
+/* Overlay play button container */
+.overlay-play-button {
+  position: absolute;
+  bottom: 0; /* Stick to the bottom */
+  left: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.4); /* Semi-transparent background */
+  padding: 10px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px; /* Add spacing between progress and controls */
+  border-bottom-right-radius: inherit;
+  border-bottom-left-radius: inherit;
+  z-index: 3;
+  animation: fadd 3s ease 0s 1 normal forwards;
+  transition: 500ms ease-in-out;
+}
+
+@keyframes fadd {
+	0% {
+		opacity: 0;
+	}
+
+	100% {
+		opacity: 1;
+	}
+}
+
+/* Progress bar */
+.progress-track {
+  width: 98%; /* Slightly inset */
+  height: 5px;
+  background-color: rgba(255, 255, 255, 0.3);
+  margin: 0 auto; /* Center horizontally */
+  border-radius: 3px;
+  overflow: hidden; /* Prevent overflow */
+}
+
+.progress-bar {
+  width: 0; /* Start with no progress */
+  height: 100%;
+  background-color: #ff0000; /* Red progress bar */
+  transition: width 0.2s ease;
+}
+
+/* Overlay controls */
+.controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+  margin-top: 10px;
+  width: 98%;
+}
+
+.left-controls,
+.right-controls {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.controls span {
+  font-size: 24px;
+  cursor: pointer;
+  color: white;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.controls span:hover {
+  transform: scale(1.2);
+  color: #ffcc00; /* Highlight color */
+}
+
+.controls span.liked{
+  color: #cf04f3;
+  animation: jello 2s ease 0s 1 normal forwards;
+}
+
+.controls span.disbled{
+  color: #c82333;
+  cursor: not-allowed;
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+@keyframes jello {
+	0% {
+		transform: scale3d(1, 1, 1);
+	}
+
+	30% {
+		transform: scale3d(0.75, 1.25, 1);
+	}
+
+	40% {
+		transform: scale3d(1.25, 0.75, 1);
+	}
+
+	50% {
+		transform: scale3d(0.85, 1.15, 1);
+	}
+
+	65% {
+		transform: scale3d(1.05, 0.95, 1);
+	}
+
+	75% {
+		transform: scale3d(0.95, 1.05, 1);
+	}
+
+	100% {
+		transform: scale3d(1, 1, 1);
+	}
+}
+
+/* Carousel controls */
+.carousel-controls {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  max-width: 1200px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.carousel-controls button {
+  background-color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 20px;
+  color: black;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.carousel-controls button.disbled{
+  color: #c82333;
+  cursor: not-allowed;
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.carousel-controls button:hover {
+  transform: scale(1.2);
+  background-color: rgba(0, 0, 255, 0.8);
+  color: white;
+}
+
+.loading-anim-video {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  background-image: url('poster.jpg'); /* Replace with your image URL */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.loading-anim-video  .spinner{
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 6px solid transparent;
+  border-top: 6px solid #1453ab;
+  animation: spinner 1.5s linear infinite;
+}
+
+.video-quote-caption {
+  font-size: 1.4rem; /* Increased font size for a more impactful quote */
+  color: gold; /* Keeps the gold color for elegance */
+  text-align: center; /* Center the quote */
+  font-family: 'Georgia', serif; /* A classic serif font for a more refined look */
+  font-style: italic; /* Italicize for a quote-like feel */
+  padding: 20px; /* Adds space around the quote */
+  margin-top: 20px; /* Space from the top */
+  width: 80%;
+  max-width: 1200px;
+  line-height: 1.2; /* Improve readability by spacing out the lines */
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background for contrast */
+  border-radius: 10px; /* Rounded corners for a softer look */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Slight shadow to lift the caption */
+  padding: 10px; /* Extra padding for a more spacious feel */
+  background-color: rgba(255, 255, 255, 0.3);
+  color: #f0f0f0;
+  font-weight: bold;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  position: relative;
+}
+
+.video-quote-caption:before {
+  content: '"'; /* Add a quote mark before the text */
+  font-size: 1rem;
+  color: gold;
+  position: absolute;
+  left: 10px;
+  top: 10px;
+}
+
+.video-quote-caption:after {
+  content: '"'; /* Add a closing quote mark */
+  font-size: 1rem;
+  color: gold;
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+}
+
+@media (max-width: 800px) {
+  /* Adjust overlay container */
+  .overlay-videos-display {
+    padding: 10px;
+  }
+
+  /* Adjust video container */
+  .video-container {
+    width: 90%; /* Reduce width for smaller screens */
+    height: auto; /* Adjust height dynamically */
+    margin-top: 20px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); /* Slightly less intense glow */
+  }
+
+
+
+  /* Adjust close button */
+  .close-overlay {
+    top: 30px;
+    right: 30px;
+    width: 40px; /* Smaller size */
+    height: 40px;
+    font-size: 20px;
+  }
+
+  /* Adjust video quote caption */
+  .video-quote-caption {
+    font-size: 1rem; /* Slightly smaller font */
+    width: 90%;
+    padding: 15px;
+    margin-top: 15px;
+  }
+
+  /* Adjust overlay play button container */
+  .overlay-play-button {
+    padding: 10px 0;
+    gap: 3px; /* Reduce spacing */
+  }
+
+  /* Adjust carousel controls */
+  .carousel-controls {
+    width: 90%; /* Reduce control width */
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  .carousel-controls button {
+    width: 40px; /* Smaller buttons */
+    height: 40px;
+    font-size: 18px;
+  }
+
+  /* Adjust progress bar */
+  .progress-track {
+    width: 95%;
+    height: 4px; /* Thinner bar */
+  }
+
+  /* Spinner in loading animation */
+  .loading-anim-video .spinner {
+    width: 50px; /* Smaller spinner */
+    height: 50px;
+    border-width: 5px;
+  }
+
+  .controls{
+    justify-content: space-around;
+  }
+
+  /* Controls font size */
+  .controls span {
+    font-size: 1.3rem; /* Slightly smaller text */
+  }
+
+  /* Video field adjustments */
+  .video-field video {
+    border-radius: 5px; /* Smaller radius */
+    height: 50vh;
+    object-fit:fill;
+  }
 }
