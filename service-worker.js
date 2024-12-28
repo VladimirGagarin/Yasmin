@@ -21,7 +21,7 @@ const urlsToCache = [
   'vid5.mp4', 'vid4.mp4', 'post3.jpg', 'post2.jpg', 'post1.jpg', "yasmin.jpg",
   'vid3.mp4', 'poster.jpg', 'vid1.mp4', 'vid2.mp4', 'introvid.mp4', 'introvid4.mp4', 
   'vid7.mp4', 'vid8.mp4', 'introvid3.mp4', 'vid6.mp4', 'introvid2.mp4','introvid6.mp4',
-  'Imajin_video (1).mp4', 'Imajin_video.mp4', 'Imajin_video (2).mp4', 'introvid5.mp4'
+  'Imajin_video (1).mp4', 'Imajin_video.mp4', 'Imajin_video (2).mp4', 'introvid5.mp4',"post9.jpg", "vid9.mp4","post10.jpg", "vid10.mp4"
 ];
 
 // Install the service worker and cache essential files
