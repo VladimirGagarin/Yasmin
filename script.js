@@ -49,6 +49,8 @@ document.addEventListener('DOMContentLoaded', function () {
     let isReadingletterIntro = false;
 
     document.querySelector('.video-reviews').classList.add('hide');
+    authOverLay.querySelector('.heartfelt-message').classList.add('hide');
+   
 
     const gText =  hour < 12 ? "Good Morning Yasmin"  : (hour >= 12 && hour < 16 ? "Good Afternoon Yasmin" : "Good Evening Yasmin")
     greetingText.textContent = gText;
@@ -523,7 +525,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
     
-    
     function handlePasswordValidation() {
         
         const passwordEnter = InputPassCode.value.trim().replace(/\s+/g, " ").toLowerCase();
@@ -534,6 +535,7 @@ document.addEventListener('DOMContentLoaded', function () {
             installOverlay.style.display = "none";
             InputPassCode.value = '';
             document.querySelector('.video-reviews').classList.remove('hide');
+            authOverLay.querySelector('.heartfelt-message').classList.remove('hide');
             document.querySelector('.loading-page-yas').style.display ='flex';
             setTimeout(function() {
                 document.querySelector('.loading-page-yas').style.display ='none';
@@ -582,6 +584,15 @@ document.addEventListener('DOMContentLoaded', function () {
         clearInterval(quoteInterval);
         if(currentQuoteReader && !currentQuoteReader.paused){
             currentQuoteReader.pause();
+        }
+
+
+        Reader.onended = function () {
+            isReadingletter = false;
+            Reader.currentTime = 0;
+            document.querySelector('.letter-div .read-btn').innerHTML = "&#9654;";
+            document.querySelector('.letter-div .read-btn').style.backgroundColor = "#b87e55";
+            handleHeartfeltMessageClick();
         }
   
     }
@@ -684,6 +695,7 @@ document.addEventListener('DOMContentLoaded', function () {
             Reader.currentTime = 0;
             document.querySelector('.letter-div .read-btn').innerHTML = "&#9654;";
             document.querySelector('.letter-div .read-btn').style.backgroundColor = "#b87e55";
+            handleHeartfeltMessageClick();
         }
 
         if (Reader.currentTime < Reader.duration / 4) {
@@ -1334,18 +1346,30 @@ document.addEventListener('DOMContentLoaded', function () {
     };
     
 
-    authOverLay.querySelector('.heartfelt-message').onclick = function () {
-        document.querySelector('.romantic-container-overlay .play-icon-for-letter').innerHTML = '&#10074;&#10074;';
+   // Function to handle the overlay message click event
+    function handleHeartfeltMessageClick() {
+        const playIcon = document.querySelector('.romantic-container-overlay .play-icon-for-letter');
+        const romanticOverlay = document.querySelector('.romantic-container-overlay');
+
+        // Update play icon and play the intro
+        playIcon.innerHTML = '&#10074;&#10074;';
         readIntro.play();
         isReadingletterIntro = true;
-        document.querySelector('.romantic-container-overlay').style.display = "flex";
 
-        readIntro.onended =  function () {
+        // Display the overlay
+        romanticOverlay.style.display = "flex";
+
+        // Handle the end of the intro playback
+        readIntro.onended = function () {
             isReadingletterIntro = false;
-            document.querySelector('.romantic-container-overlay .play-icon-for-letter').innerHTML = isReadingletterIntro ? '&#10074;&#10074;' : '&#9654;';
-            displayImageOverlay ();
-        }
+            playIcon.innerHTML = isReadingletterIntro ? '&#10074;&#10074;' : '&#9654;';
+            displayImageOverlay();
+        };
     }
+
+    // Attach the click event listener
+    authOverLay.querySelector('.heartfelt-message').onclick = handleHeartfeltMessageClick;
+
 
     document.querySelector('.romantic-container-overlay .play-icon-for-letter').onclick = function () {
         isReadingletterIntro = ! isReadingletterIntro;
@@ -1410,6 +1434,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const animVideo = document.querySelector('.video-container .loading-anim-video');
     const videoCaption = document.querySelector('.video-quote-caption');
     const videoControls = videoContainer.querySelector('.overlay-play-button');
+    const progressTruck = videoControls.querySelector('.progress-track');
 
     // Video list
     const videoList = [
@@ -1739,5 +1764,14 @@ document.addEventListener('DOMContentLoaded', function () {
         const fsec = sec < 10 ? `0${sec}`: sec;
 
         return `${fmin?? "00"} : ${fsec?? "00"}`;
+    }
+
+    progressTruck.onclick = function (event) {
+        const width = progressTruck.clientWidth;
+        const clientX = event.offsetX;
+
+        const duration = currentVideoElement.duration;
+
+        currentVideoElement.currentTime = (clientX / width) * duration;
     }
 })
