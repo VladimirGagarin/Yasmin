@@ -1447,12 +1447,14 @@ document.addEventListener('DOMContentLoaded', function () {
     // Video list
     const videoList = [
         {video: "vid1.mp4", quote: "No matter where life takes us, I’ll always be here for you, Yasmin.", post: "post1.jpg", liked: false},
+        {video: "vid9.mp4", quote: "In every breath I take, in every heartbeat I feel, all I know is that I am falling for you, Yasmin—deeper with every moment.", post: "post9.jpg", liked: false},
+        {video: "vid6.mp4", quote: "Yasmin, you're not just a miracle to me; you're the reason I believe in the impossible.", post:"post6.jpg",liked:false},
+        {video: "vid10.mp4", quote: "To be loved by you, Yasmin, is the greatest blessing life has bestowed upon me. You make everything in this world feel special, just by being in it.", post: "post10.jpg", liked: false},
+        {video: "vid7.mp4", quote: "Yasmin, your beauty is not just incredible—it's the light that makes everything more beautiful.", post:"post7.jpg",liked:false},
         {video: "vid2.mp4", quote: "If you leave, my heart will remain empty, lost without you, Yasmin.", post: "post2.jpg", liked: false},
         {video: "vid3.mp4", quote: "You are the one I needed, and now I’ve found everything in you, Yasmin.", post: "post3.jpg", liked: false},
         {video: "vid4.mp4", quote: "Our souls are threads of the same tapestry, woven together by love to create a bond nothing can tear apart, Yasmin.", post:"post4.jpg", liked:false},
         {video: "vid5.mp4", quote: "No matter where the world pulls us, I’ll always find my way back to you, Yasmin. You’re my home.", post:"post5.jpg",liked:false},
-        {video: "vid6.mp4", quote: "Yasmin, you're not just a miracle to me; you're the reason I believe in the impossible.", post:"post6.jpg",liked:false},
-        {video: "vid7.mp4", quote: "Yasmin, your beauty is not just incredible—it's the light that makes everything more beautiful.", post:"post7.jpg",liked:false},
         {video: "vid8.mp4", quote: "You are my light, Yasmin. Without you, I fade into darkness", post:"post8.jpg",liked:false},
     ];
     
@@ -1569,7 +1571,18 @@ document.addEventListener('DOMContentLoaded', function () {
         currentVideoElement.addEventListener('dblclick', function () {
             isFullScreen = !isFullScreen;
             toggleFullScreen(isFullScreen)
-        })
+        });
+
+        currentVideoElement.addEventListener("contextmenu", function (event) {
+            // Prevent the default right-click menu
+            event.preventDefault();
+          
+            // Show a romantic message or animation
+            showRomanticMessage();
+          
+            // Optionally, you can log the event or do something else
+            console.log("Right-click disabled. A romantic message is displayed.");
+        });
     }
 
     // Toggle Play/Pause
@@ -1782,4 +1795,45 @@ document.addEventListener('DOMContentLoaded', function () {
 
         currentVideoElement.currentTime = (clientX / width) * duration;
     }
+
+    function showRomanticMessage() {
+        // Array of romantic messages
+        const loveQuotesMessages = [
+            "Every moment with you Yasmin feels like magic. ❤️",
+            "In your eyes, I see my home, and in your heart, I find my peace. 💖",
+            "My world is complete because you're in it, Yasmin. 💫",
+            "To love you is to breathe in the sweetest air, Yasmin. 🍃",
+            "You are the melody my heart beats to, Yasmin. 🎶",
+            "With you, Yasmin, I have everything I ever dreamed of and more. 💘"
+        ];
+        
+        // Pick a random quote from the array
+        const randomIndex = Math.floor(Math.random() * loveQuotesMessages.length);
+        const message = document.createElement('div');
+        message.innerHTML = loveQuotesMessages[randomIndex];
+        message.style.position = 'absolute';
+        message.style.top = '0';
+        message.style.left = '0';
+        message.style.width = '80%';
+        message.style.height = '80%';
+        message.style.fontSize = '2.4rem';
+        message.style.color = 'white';
+        message.style.fontWeight = 'bold';
+        message.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+        message.style.padding = '10px';
+        message.style.zIndex = '9999';
+        message.style.textAlign = 'center';
+        message.style.display = 'flex';
+        message.style.alignItems = 'center';
+        message.style.justifyContent = 'center';
+      
+        // Append the message to the body or video container
+        videoField.appendChild(message);
+      
+        // Remove the message after 3 seconds (or adjust the time as needed)
+        setTimeout(() => {
+          message.remove();
+        }, 3000);
+    }
+    
 })
