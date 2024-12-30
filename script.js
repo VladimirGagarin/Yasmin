@@ -1597,7 +1597,7 @@ document.addEventListener('DOMContentLoaded', function () {
             progressBar.style.width = `0%`;
             durationArea.textContent = '00:00 / 00:00';
             currentVideoIndex = (currentVideoIndex + 1 + videoList.length) % videoList.length;
-            showRomanticMessage(3000);
+            showRomanticMessage(6000);
             setTimeout(loadVideo(),4000)
         });
 
@@ -1613,7 +1613,7 @@ document.addEventListener('DOMContentLoaded', function () {
         currentVideoElement.addEventListener('dblclick', function () {
             isFullScreen = !isFullScreen;
             toggleFullScreen(isFullScreen);
-            showRomanticMessage(4000);
+            showRomanticMessage(6000);
         });
 
         currentVideoElement.addEventListener("contextmenu", function (event) {
@@ -1639,7 +1639,7 @@ document.addEventListener('DOMContentLoaded', function () {
             videoElement.pause();
         }
 
-        toggleControls(isPlayingVideo)
+        toggleControls(isPlayingVideo);
     }
 
    
@@ -1668,12 +1668,12 @@ document.addEventListener('DOMContentLoaded', function () {
         progressBar.style.width = `${percent}%`;
         durationArea.textContent = `${formattedTime(videoElement.currentTime)} / ${videoElement.duration ? formattedTime(videoElement.duration) : "00 : 00"}`;
 
-       // Calculate the threshold for the last 10 seconds
+        // Calculate the threshold for the last 10 seconds
         const tenSecondsLeft = videoElement.duration ? videoElement.duration - 10 : 0;
 
         // Show a romantic message if in the last 10 seconds
         if (videoElement.currentTime >= tenSecondsLeft && videoElement.duration) {
-            showRomanticMessage(6000); // Show message for 6 seconds
+            showRomanticMessage(8000); // Show message for 6 seconds
         }
     }
     
@@ -1747,7 +1747,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const videoElement = videoField.querySelector('video');
         videoElement.muted = isMuted;
         MuteBtn.innerHTML = isMuted ? '&#128264': '&#128266';
-        showRomanticMessage(4000);
+        showRomanticMessage(6000);
     }
 
     fullScreenBtn.onclick = function() {
@@ -1769,7 +1769,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 videoContainer.msRequestFullscreen();
             }
 
-            showRomanticMessage(4000);
+            showRomanticMessage(6000);
         } else {
             if (document.exitFullscreen) {
                 document.exitFullscreen();
@@ -1795,7 +1795,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let likedVideos = JSON.parse(localStorage.getItem('likedVideos')) || [];
         if (currentVideo.liked) {
             likedVideos.push(currentVideo.video); // Add video URL to the liked list
-            showRomanticMessage(4000);
+            showRomanticMessage(6000);
         } else {
             likedVideos = likedVideos.filter(vid => vid !== currentVideo.video); // Remove video URL from the liked list
         }
@@ -1853,7 +1853,14 @@ document.addEventListener('DOMContentLoaded', function () {
         currentVideoElement.currentTime = (clientX / width) * duration;
     }
 
-    function showRomanticMessage(duration = 5000) {
+    let isMessageDisplayed = false; // Flag to track if a message is currently displayed
+
+    function showRomanticMessage(duration = 6000) {
+        // If a message is already displayed, exit the function
+        if (isMessageDisplayed) return;
+
+        isMessageDisplayed = true; // Set the flag to true
+
         // Array of romantic messages
         const loveQuotesMessages = [
             "Every moment with you, Yasmin, feels like an eternal dream woven in stars. ✨",
@@ -1867,24 +1874,25 @@ document.addEventListener('DOMContentLoaded', function () {
             "You, Yasmin, are my every thought, my every wish, and my forever love. Together, we are timeless. ⏳",
             "The love we share, Yasmin, is a rare treasure, sparkling brighter than the stars in the night sky. 🌟"
         ];
-          
 
         // Pick a random quote from the array
         const randomIndex = Math.floor(Math.random() * loveQuotesMessages.length);
         const message = document.createElement('div');
         message.innerHTML = loveQuotesMessages[randomIndex];
-    
+
         // Add the class for styling
         message.classList.add('romantic-message');
-    
+
         // Append the message to the body or video container
         videoField.appendChild(message);
-    
-        // Remove the message after 3 seconds
+
+        // Remove the message after the specified duration and reset the flag
         setTimeout(() => {
             message.remove();
+            isMessageDisplayed = false; // Reset the flag
         }, duration);
     }
+
     
     
 });
