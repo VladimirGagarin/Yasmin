@@ -46,6 +46,16 @@ document.addEventListener('DOMContentLoaded', function () {
     let currentQgameIndex = 0;
     let interval;
     let isReadingletterIntro = false;
+    let timeoutId;  
+    let currentVideoIndex = 0;
+    let isPlayingVideo = false;
+    let isMuted = false;
+    let isFullScreen = false;
+    let currentVideo = null;
+    let wasPlayingBeforeHidden = false;
+    let currentVideoElement = null; // Global reference to the current video element
+    let stallTimeout; // To track the timeout for the 'stalled' event
+    let waitTimeout;  // To track the timeout for the 'waiting' event
 
     document.querySelector('.video-reviews').classList.add('hide');
     authOverLay.querySelector('.heartfelt-message').classList.add('hide');
@@ -567,7 +577,10 @@ document.addEventListener('DOMContentLoaded', function () {
             setTimeout(function() {
                 document.querySelector('.lyrics-song').innerHTML = '';
                 document.querySelector('.loading-page-yas').style.display ='none';
-                showIntrovideo();
+                if(!wasPlayingBeforeHidden) {
+                    showIntrovideo();
+                }
+                
             },4000)
         } else {
             vibrate.play();
@@ -795,8 +808,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
    
-
-    
     // Fetch and display questions based on the index
     function fetchAndDisplayQuestions(index) {
         if (index < Questions.length) {
@@ -1477,20 +1488,10 @@ document.addEventListener('DOMContentLoaded', function () {
         {video: "vid4.mp4", quote: "Our souls are threads of the same tapestry, woven together by love to create a bond nothing can tear apart, Yasmin.", post:"post4.jpg", liked:false},
         {video: "vid5.mp4", quote: "No matter where the world pulls us, I’ll always find my way back to you, Yasmin. You’re my home.", post:"post5.jpg",liked:false},
         {video: "vid8.mp4", quote: "You are my light, Yasmin. Without you, I fade into darkness", post:"post8.jpg",liked:false},
+        {video: "vid11.mp4", quote: "Yasmin i do really really Like you so much.Forever yours", post:"post11.jpg", liked:false}
     ];
     
-    let timeoutId;  
-    let currentVideoIndex = 0;
-    let isPlayingVideo = false;
-    let isMuted = false;
-    let isFullScreen = false;
-    let currentVideo = null;
-    let wasPlayingBeforeHidden = false;
-    let currentVideoElement = null; // Global reference to the current video element
-    let stallTimeout; // To track the timeout for the 'stalled' event
-    let waitTimeout;  // To track the timeout for the 'waiting' event
-
-
+    
 
     // Function to load and display the current video
     function loadVideo() {
@@ -1700,6 +1701,10 @@ document.addEventListener('DOMContentLoaded', function () {
         loadVideo();
     }
 
+    document.querySelector('.vid-button').onclick = function () {
+        showOverlay();
+    }
+
     // Event Listeners
     document.querySelector('.next-btn').onclick = (event) => {
         document.querySelectorAll('.carousel-controls button').forEach(btn => {btn.classList.add('disbled')});
@@ -1770,6 +1775,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         fullScreenBtn.innerHTML = state ? "&#9212;" : "&#x26F6;";
+        videoContainer.classList.toggle('fmode', state);
     }
 
     // Like button functionality
@@ -1815,6 +1821,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     playButton.innerHTML = '&#10074;&#10074;'; // Pause icon
                     wasPlayingBeforeHidden = false; // Reset the flag after resuming
                 },4000);
+
             }
         }
     });
@@ -1872,4 +1879,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     
     
-})
+});
+
+//-----------------------------------------------------------------------------------------------------------------------
+
