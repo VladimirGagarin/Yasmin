@@ -1673,7 +1673,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Show a romantic message if in the last 10 seconds
         if (videoElement.currentTime >= tenSecondsLeft && videoElement.duration) {
-            showRomanticMessage(8000); // Show message for 6 seconds
+            showRomanticMessage(10000); // Show message for 6 seconds
         }
     }
     
@@ -1872,8 +1872,14 @@ document.addEventListener('DOMContentLoaded', function () {
             "In your smile, Yasmin, I find my greatest joy, and in your touch, I feel eternity. 💘",
             "With every breath, Yasmin, I fall more deeply in love with you—an endless symphony of affection. 🎶",
             "You, Yasmin, are my every thought, my every wish, and my forever love. Together, we are timeless. ⏳",
-            "The love we share, Yasmin, is a rare treasure, sparkling brighter than the stars in the night sky. 🌟"
+            "The love we share, Yasmin, is a rare treasure, sparkling brighter than the stars in the night sky. 🌟",
+            "Yasmin, you are the light that turns my darkest nights into a beautiful dawn. 🌅",
+            "Every heartbeat whispers your name, Yasmin, a melody only my soul can hear. 🎵",
+            "With you, Yasmin, even the simplest moments feel extraordinary, like magic unfolding. ✨",
+            "You are my safe haven, Yasmin, where my heart feels at peace and my soul feels free. 🕊️",
+            "In your presence, Yasmin, time stands still, and all that exists is our eternal love. ⏳❤️"
         ];
+        
 
         // Pick a random quote from the array
         const randomIndex = Math.floor(Math.random() * loveQuotesMessages.length);
