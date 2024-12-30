@@ -1661,12 +1661,12 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Update progress bar
-    function updateProgressBar(videoElement) {
-        const percent = videoElement.duration ? (videoElement.currentTime / videoElement.duration) * 100 : 0;
-    
-        progressBar.style.width = `${percent}%`;
-        durationArea.textContent = `${formattedTime(videoElement.currentTime)} / ${videoElement.duration ? formattedTime(videoElement.duration) : "00 : 00"}`;
+    // Calculate the threshold for the last 10 seconds
+    const tenSecondsLeft = videoElement.duration ? videoElement.duration - 10 : 0;
+
+    // Show a romantic message if in the last 10 seconds
+    if (videoElement.currentTime >= tenSecondsLeft && videoElement.duration) {
+        showRomanticMessage(6000); // Show message for 6 seconds
     }
     
 
