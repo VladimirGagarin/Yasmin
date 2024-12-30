@@ -24,6 +24,7 @@ body{
     flex-direction: column;
     box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
     animation: myAnim 2s ease 0s 1 normal forwards;
+    position: relative;
 }
 
 @keyframes myAnim {
@@ -69,6 +70,29 @@ body{
 
 .intro-div h1 > * {
     z-index:2;
+}
+
+.vid-button{
+  position: absolute;
+  top :10px;
+  right: 10px;
+  background-color: #0056b3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  color: #f0f0f0;
+  z-index: 3;
+  cursor: pointer;
+  border-radius: 50%;
+  box-shadow: rgba(0, 0, 0, 0.5) 0px 19px 38px, rgba(0, 0, 0, 0.35) 0px 15px 12px;
+}
+
+.vid-button:hover{ 
+  background-color: #f9f9f9;
+  color: #0056b3;
+  transform: scale(1.2);
 }
 
 .greeting{
@@ -144,6 +168,13 @@ body{
     .greeting .buttons button {
         font-size: 20px; /* Smaller button text */
         padding: 8px 16px; /* Adjust button size */
+    }
+
+    .vid-button{
+      top :0px;
+      right: 5px;
+      width: 30px;
+      height: 30px;
     }
 }
 
@@ -1784,6 +1815,12 @@ body {
   }
 }
 
+.video-container.fmode .video-field{
+  height: auto;
+}
+.video-container.fmode .video-field video{
+  object-fit: fill;
+}
 
 /* Video field */
 .video-field {
@@ -2034,8 +2071,11 @@ body {
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); /* Slightly less intense glow */
   }
 
-
-
+  .video-container.fmode{
+    height: 100%;
+    padding: 0;
+  }
+  
   /* Adjust close button */
   .close-overlay {
     top: 30px;
@@ -2094,11 +2134,15 @@ body {
     font-size: 1.3rem; /* Slightly smaller text */
   }
 
+  .video-container.fmode .video-field{
+    width: 100%;
+    height: 100%;
+  }
   /* Video field adjustments */
   .video-field video {
     border-radius: 5px; /* Smaller radius */
-    height: 50vh;
-    object-fit:fill;
+    height: 100%;
+    object-fit:cover;
   }
 }
 
